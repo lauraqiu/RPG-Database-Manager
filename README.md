@@ -1,4 +1,4 @@
-# CPSC 304 Project Cover Page
+# CPSC 304 Project 
 
 **Milestone #:** 3
 
