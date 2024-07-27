@@ -1,6 +1,8 @@
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class LoginPage extends JPanel {
     public LoginPage(BackgroundFrame backgroundFrame){
         setLayout(new GridBagLayout());
@@ -33,6 +35,25 @@ public class LoginPage extends JPanel {
         gridBagConstraints.gridx = 1;
         add(login, gridBagConstraints);
 
+        createAccount.addActionListener(e -> {
+            backgroundFrame.navigateToCreateAccountPage();
+        });
+
+        login.addActionListener(e -> {
+            String username = userNameField.getText();
+            String passwordString = new String(passwordField.getPassword());
+            if (username.equals("")){
+                showMessageDialog(this, "UserName is not in system", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if (passwordString.equals("Tropical lulu")){
+                showMessageDialog(this, "Password incorrect","Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else {
+                backgroundFrame.navigateToCreateAccountPage();
+            }
+            //TODO AE: check if userName is in the DB, if not return an error
+            //TODO AE: check if password matches userName in DB if not return error
+        });
 
     }
 }
