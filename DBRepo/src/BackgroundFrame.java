@@ -5,6 +5,9 @@ public class BackgroundFrame extends JFrame
 {
     CardLayout cardLayout;
     JPanel panel;
+    DbHandler dbHandler;
+    LoginWindow loginWindow;
+
     public BackgroundFrame(){
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
@@ -12,6 +15,7 @@ public class BackgroundFrame extends JFrame
         LoginPage loginPage = new LoginPage(this);
         AccountInfoPage accountInfoPage = new AccountInfoPage(this);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage);
+
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");
         panel.add(accountInfoPage, "accountInfoPage");
@@ -30,4 +34,7 @@ public class BackgroundFrame extends JFrame
     public void navigateToAccountInfoPage(){
         cardLayout.show(panel, "accountInfoPage");
     }
+
+
+
 }
