@@ -1,8 +1,10 @@
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class AccountCreationPage extends JPanel {
-    public AccountCreationPage(BackgroundFrame backgroundFrame) {
+    public AccountCreationPage(BackgroundFrame backgroundFrame, AccountInfoPage accountInfoPage) {
         setLayout(new GridBagLayout());
 
         JLabel userName = new JLabel("UserName:");
@@ -38,7 +40,35 @@ public class AccountCreationPage extends JPanel {
         add(enter, gridBagConstraints);
 
         enter.addActionListener(e -> {
-            backgroundFrame.navigateToLoginPage();
+            String emailString = emailField.getText();
+            String passwordString = new String(passwordField.getPassword());
+            String usernameString = userNameField.getText();
+            if (!isValidEmailAddress(emailString))
+                showMessageDialog(this, "Email not valid", "Error", JOptionPane.ERROR_MESSAGE);
+            else if(emailString.equals("LULU@gmail.com")){
+                showMessageDialog(this, "Account Already exists try logging in", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(passwordString.isEmpty()){
+                showMessageDialog(this, "Password is empty", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if(usernameString.isEmpty()){
+                showMessageDialog(this, "Username is empty", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else{
+                accountInfoPage.setUserNameContext(usernameString);
+                accountInfoPage.updateContent();
+
+                showMessageDialog(this, "Success! Lets Add your information!");
+                backgroundFrame.navigateToAccountInfoPage();
+            }
         });
     }
+    //Is this allowed? I took this from stackOverflow Source: https://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+    public boolean isValidEmailAddress(String email) {
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
+
 }

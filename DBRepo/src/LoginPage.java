@@ -49,7 +49,7 @@ public class LoginPage extends JPanel {
                 showMessageDialog(this, "Password incorrect","Error", JOptionPane.ERROR_MESSAGE);
             }
             else {
-                backgroundFrame.navigateToCreateAccountPage();
+                backgroundFrame.navigateToAccountInfoPage();
             }
             //TODO AE: check if userName is in the DB, if not return an error
             //TODO AE: check if password matches userName in DB if not return error
