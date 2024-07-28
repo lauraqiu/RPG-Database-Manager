@@ -1,6 +1,7 @@
 package ui;
 
 import database.DbHandler;
+import ui_logic.AccountCreationPageDBHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -16,9 +17,11 @@ public class BackgroundFrame extends JFrame
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
 
+        AccountCreationPageDBHandler accountCreationPageDBHandler  = new AccountCreationPageDBHandler(dbHandler);
+
         LoginPage loginPage = new LoginPage(this);
         AccountInfoPage accountInfoPage = new AccountInfoPage(this);
-        AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, dbHandler);
+        AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
 
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");

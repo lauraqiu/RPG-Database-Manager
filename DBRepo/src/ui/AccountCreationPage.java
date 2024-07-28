@@ -8,7 +8,11 @@ import java.awt.*;
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AccountCreationPage extends JPanel {
-    public AccountCreationPage(BackgroundFrame backgroundFrame, AccountInfoPage accountInfoPage, AccountCreationPageDBHandler acpDBHandler) {
+    AccountCreationPageDBHandler dbHandler;
+    public AccountCreationPage(BackgroundFrame backgroundFrame, AccountInfoPage accountInfoPage, AccountCreationPageDBHandler accountCreationPageDBHandler) {
+
+        this.dbHandler = accountCreationPageDBHandler;
+
         setLayout(new GridBagLayout());
 
         JLabel userName = new JLabel("UserName:");
@@ -60,7 +64,7 @@ public class AccountCreationPage extends JPanel {
             }
             else{
                 //TODO: database insert, INSERT into ACCOUNTS(usernameString,0, passwordString, emailString, 100)
-
+                accountCreationPageDBHandler.addAccount(usernameString, passwordString, emailString);
                 accountInfoPage.setUserNameContext(usernameString);
                 accountInfoPage.updateContent();
 

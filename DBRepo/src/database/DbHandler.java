@@ -51,4 +51,7 @@ public class DbHandler {
             return false;
         }
     }
+    public Connection getConnection() {
+        return this.connection;
+    }
 }
