@@ -1,10 +1,10 @@
 CREATE TABLE Accounts
 (
     username   VARCHAR(20) PRIMARY KEY,
-    isVerified NUMBER(1,0),
+    isVerified NUMBER(1, 0),
     password   VARCHAR(20)         NOT NULL,
     email      VARCHAR(320) UNIQUE NOT NULL,
-    InvSlots   INT              NOT NULL
+    InvSlots   INT                 NOT NULL
 );
 
 -- CREATE TABLE Friends
@@ -15,28 +15,28 @@ CREATE TABLE Accounts
 --     FOREIGN KEY (friend) REFERENCES Accounts (username) ON DELETE CASCADE
 -- );
 --
--- CREATE TABLE Characters
--- (
---     ID           VARCHAR(20),
---     AccName      VARCHAR(20),
---     name         VARCHAR(20)       NOT NULL,
---     class        VARCHAR(20)       NOT NULL,
---     age          INT(2)            NOT NULL,
---     height       INT(3)            NOT NULL,
---     weight       INT(3)            NOT NULL,
---     race         VARCHAR(20)       NOT NULL,
---     level        INT(5)  DEFAULT 1 NOT NULL,
---     money        INT(15) DEFAULT 0 NOT NULL,
---     strength     INT(5)  DEFAULT 1 NOT NULL,
---     intelligence INT(5)  DEFAULT 1 NOT NULL,
---     charisma     INT(5)  DEFAULT 1 NOT NULL,
---     dexterity    INT(5)  DEFAULT 1 NOT NULL,
---     luck         INT(5)  DEFAULT 1 NOT NULL,
---     InvSlots     INT(2)            NOT NULL,
---     PRIMARY KEY (ID, AccName),
---     FOREIGN KEY (AccName) REFERENCES Accounts (username) ON DELETE CASCADE
--- );
---
+CREATE TABLE Characters
+(
+    ID           VARCHAR(20),
+    AccName      VARCHAR(20),
+    name         VARCHAR(20)   NOT NULL,
+    class        VARCHAR(20)   NOT NULL,
+    age          INT           NOT NULL,
+    height       INT           NOT NULL,
+    weight       INT           NOT NULL,
+    race         VARCHAR(20)   NOT NULL,
+    lvl        INT DEFAULT 1 NOT NULL,
+    money        INT DEFAULT 0 NOT NULL,
+    strength     INT DEFAULT 1 NOT NULL,
+    intelligence INT DEFAULT 1 NOT NULL,
+    charisma     INT DEFAULT 1 NOT NULL,
+    dexterity    INT DEFAULT 1 NOT NULL,
+    luck         INT DEFAULT 1 NOT NULL,
+    InvSlots     INT           NOT NULL,
+    PRIMARY KEY (ID, AccName),
+    FOREIGN KEY (AccName) REFERENCES Accounts (username) ON DELETE CASCADE
+);
+
 -- CREATE TABLE Equipped
 -- (
 --     EqName  VARCHAR(20),

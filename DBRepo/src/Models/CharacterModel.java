@@ -1,13 +1,12 @@
 package Models;
 
-import javax.swing.*;
 
 public class CharacterModel
 {
-    private String name, classString, race;
+    private String name, classString, race, username;
     private int age, height, weight, strength, intelligence, dexterity, charisma, luck;
 
-    public CharacterModel( String name, String classString,
+    public CharacterModel( String name, String classString, String username,
                            int age, int height, int weight,
                            int strength, int intelligence,
                            int dexterity, int charisma,
@@ -23,6 +22,7 @@ public class CharacterModel
         this.charisma = charisma;
         this.luck = luck;
         this.race = race;
+        this.username = username;
     }
     public String getName(){
         return this.name;
@@ -56,5 +56,8 @@ public class CharacterModel
     }
     public String getRace(){
         return this.race;
+    }
+    public String getUsername(){
+        return this.username;
     }
 }

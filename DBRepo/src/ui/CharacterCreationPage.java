@@ -1,10 +1,15 @@
 package ui;
 
+import Models.CharacterModel;
+import ui_logic.CharacterCreationDBHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class CharacterCreationPage extends JPanel {
-    public CharacterCreationPage() {
+    String username;
+
+    public CharacterCreationPage(CharacterCreationDBHandler characterCreationDBHandler) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -89,11 +94,29 @@ public class CharacterCreationPage extends JPanel {
 
         //TODO AE: Add image
 
-        createCharacterButton.addActionListener( e -> {
+        createCharacterButton.addActionListener(e -> {
+            String name = nameField.getText();
+            String className = classOptions.getSelectedItem().toString();
+            String race = raceOptions.getSelectedItem().toString();
+            int age = ageSlider.getValue();
+            int height = heightSlider.getValue();
+            int weight = weightSlider.getValue();
+            int strength = strengthSlider.getValue();
+            int intelligence = intelligenceSlider.getValue();
+            int dexterity = dexteritySlider.getValue();
+            int charisma = charismaSlider.getValue();
+            int luck = luckSlider.getValue();
 
-        })
+            CharacterModel characterUpdate = new CharacterModel(name,
+                    className,this.username, age, height, weight, strength,
+                    intelligence, dexterity, charisma, luck, race);
 
-
-
+            characterCreationDBHandler.uploadCharacter(characterUpdate, this.username);
+        });
+    }
+    public void setUserName(String userName){
+        this.username = userName;
+        revalidate();
+        repaint();
     }
 }

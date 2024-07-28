@@ -9,7 +9,7 @@ public class AccountInfoPage extends JPanel {
     public String userName;
     private final JLabel userNameLabel;
 
-    public AccountInfoPage(BackgroundFrame backgroundFrame, AccountInfoPageDBHandler accountInfoPageDBHandler) {
+    public AccountInfoPage(BackgroundFrame backgroundFrame, CharacterCreationPage characterCreationPage, AccountInfoPageDBHandler accountInfoPageDBHandler) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -43,6 +43,7 @@ public class AccountInfoPage extends JPanel {
         add(new JPanel(), gridBagConstraints);
 
         createCharacterButton.addActionListener(t -> {
+            characterCreationPage.setUserName(userName);
             backgroundFrame.navigateToCharacterCreationPage();
         });
 

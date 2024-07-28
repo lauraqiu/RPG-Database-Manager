@@ -3,6 +3,7 @@ package ui;
 import database.DbHandler;
 import ui_logic.AccountCreationPageDBHandler;
 import ui_logic.AccountInfoPageDBHandler;
+import ui_logic.CharacterCreationDBHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,10 +21,11 @@ public class BackgroundFrame extends JFrame
 
         AccountCreationPageDBHandler accountCreationPageDBHandler  = new AccountCreationPageDBHandler(dbHandler);
         AccountInfoPageDBHandler accountInfoPageDBHandler = new AccountInfoPageDBHandler(dbHandler);
+        CharacterCreationDBHandler characterCreationDBHandler = new CharacterCreationDBHandler(dbHandler);
+        CharacterCreationPage characterCreationPage = new CharacterCreationPage(characterCreationDBHandler);
         LoginPage loginPage = new LoginPage(this);
-        AccountInfoPage accountInfoPage = new AccountInfoPage(this, accountInfoPageDBHandler);
+        AccountInfoPage accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
-        CharacterCreationPage characterCreationPage = new CharacterCreationPage();
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");
         panel.add(accountInfoPage, "accountInfoPage");
