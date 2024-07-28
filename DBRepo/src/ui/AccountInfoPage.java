@@ -3,10 +3,12 @@ package ui;
 import ui_logic.AccountInfoPageDBHandler;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.Vector;
 
 public class AccountInfoPage extends JPanel {
     public String userName;
@@ -97,8 +99,9 @@ public class AccountInfoPage extends JPanel {
     }
     public void updateCharacters(){
         if (this.userName != null) {
-            Object[][] queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
             String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Delete"};
+            Object[][] queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
+
             DefaultTableModel dtm = new DefaultTableModel(columnNames,0);
             for (Object[] objects : queryResult) {
                 JButton delete = new JButton("Delete");
