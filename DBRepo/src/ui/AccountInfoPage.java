@@ -97,21 +97,12 @@ public class AccountInfoPage extends JPanel {
     }
     public void updateCharacters(){
         if (this.userName != null) {
-            ResultSet resultset = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
+            Object[][] queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
             String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Delete"};
             DefaultTableModel dtm = new DefaultTableModel(columnNames,0);
-            try {
-                while (resultset.next()) {
-                    String characterName = resultset.getString("CharacterName");
-                    int level = resultset.getInt("Level");
-                    String className = resultset.getString("Class");
-                    String server = "Default";
-                    JButton delete = new JButton("Delete");
-                    dtm.addRow(new Object[]{characterName,level,className,server,delete});
-                }
-            }
-            catch (SQLException e) {
-                System.out.println("uwu");
+            for (Object[] objects : queryResult) {
+                JButton delete = new JButton("Delete");
+                dtm.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3], delete});
             }
             this.charactersTable = new JTable(dtm);
 

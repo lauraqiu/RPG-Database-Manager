@@ -58,20 +58,28 @@ public class AccountInfoPageDBHandler implements AccountInfoPageDelegate {
     }
 
     @Override
-    public ResultSet getUpdatedCharacterInfo(String username) {
-        String query = "SELECT NAME,LVL,CLASS FROM CHARACTERS WHERE ACCNAME = ?";
+    public Object[][] getUpdatedCharacterInfo(String username) {
+        String query = "SELECT NAME,LVL,CLASS FROM CHARACTERS WHERE ACC_USER = ?";
 
         try{
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1,username);
             ResultSet rs = ps.executeQuery();
-
+            Object[][] queryResults = new Object[rs.getFetchSize()][4];
+            int i = 0;
+            while (rs.next()) {
+                queryResults[i][0] = rs.getString("NAME");
+                queryResults[i][1] = rs.getInt("LVL");
+                queryResults[i][2] = rs.getString("CLASS");
+                queryResults[i][3] = "NONE";
+                i++;
+            }
             ps.executeUpdate();
             connection.commit();
             ps.close();
 
-            return rs;
+            return queryResults;
 
         } catch (SQLException e) {
             System.out.println("ERROR");

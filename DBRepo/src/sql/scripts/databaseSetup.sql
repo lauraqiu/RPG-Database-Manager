@@ -18,7 +18,7 @@ CREATE TABLE Accounts
 CREATE TABLE Characters
 (
     ID           VARCHAR(20),
-    AccName      VARCHAR(20),
+    Acc_User      VARCHAR(20),
     name         VARCHAR(20)   NOT NULL,
     class        VARCHAR(20)   NOT NULL,
     age          INT           NOT NULL,
@@ -33,8 +33,8 @@ CREATE TABLE Characters
     dexterity    INT DEFAULT 1 NOT NULL,
     luck         INT DEFAULT 1 NOT NULL,
     InvSlots     INT           NOT NULL,
-    PRIMARY KEY (ID, AccName),
-    FOREIGN KEY (AccName) REFERENCES Accounts (username) ON DELETE CASCADE
+    PRIMARY KEY (ID, Acc_User),
+    FOREIGN KEY (Acc_User) REFERENCES Accounts (username) ON DELETE CASCADE
 );
 
 -- CREATE TABLE Equipped
