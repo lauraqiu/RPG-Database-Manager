@@ -5,13 +5,15 @@ import delegates.AccountCreationPageDelegate;
 import utilities.PrintablePreparedStatement;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.logging.Logger;
+import ui_logic.DBHandlerConstants;
+
+import static ui_logic.DBHandlerConstants.IS_VERIFIED_DEFAULT;
+import static ui_logic.DBHandlerConstants.NUM_SLOTS_DEFAULT;
 
 public class AccountCreationPageDBHandler implements AccountCreationPageDelegate {
     DbHandler dbHandler;
-    Integer IS_VERIFIED_DEFAULT = 0;
-    Integer NUM_SLOTS_DEFAULT = 0;
     public AccountCreationPageDBHandler(DbHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
@@ -36,6 +38,52 @@ public class AccountCreationPageDBHandler implements AccountCreationPageDelegate
             System.out.println("ERROR");
             throw new RuntimeException(e);
         }
+
+    }
+
+
+    @Override
+    public boolean checkUniqueEmail(String email) {
+
+        String query = "SELECT * FROM ACCOUNTS WHERE EMAIL = ?";
+        try{
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1,email);
+            ResultSet rs = ps.executeQuery();
+            boolean notEmpty = !rs.isBeforeFirst();
+
+            rs.close();
+            ps.close();
+
+            return notEmpty;
+
+        } catch (SQLException e) {
+            System.out.println("ERROR");
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public boolean checkUniqueUsername(String username) {
+        String query = "SELECT * FROM ACCOUNTS WHERE USERNAME = ?";
+        try{
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1,username);
+            ResultSet rs = ps.executeQuery();
+            boolean notEmpty = !rs.isBeforeFirst();
+
+            rs.close();
+            ps.close();
+
+            return notEmpty;
+
+        } catch (SQLException e) {
+            System.out.println("ERROR");
+            throw new RuntimeException(e);
+        }
+
 
     }
 }

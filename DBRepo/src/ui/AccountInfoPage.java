@@ -1,12 +1,15 @@
 package ui;
 
+import ui_logic.AccountInfoPageDBHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class AccountInfoPage extends JPanel {
     public String userName;
-    private JLabel userNameLabel;
-    public AccountInfoPage(BackgroundFrame backgroundFrame) {
+    private final JLabel userNameLabel;
+
+    public AccountInfoPage(BackgroundFrame backgroundFrame, AccountInfoPageDBHandler accountInfoPageDBHandler) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -37,14 +40,17 @@ public class AccountInfoPage extends JPanel {
 
         settingsButton.addActionListener(e -> {
             JFrame settingsFrame = new JFrame("Settings");
-            settingsFrame.setSize(100,100);
+            settingsFrame.setSize(100, 100);
             settingsFrame.setLayout(new GridBagLayout());
             GridBagConstraints newGridBagConstraints = new GridBagConstraints();
             newGridBagConstraints.gridx = 0;
             newGridBagConstraints.gridy = 0;
             newGridBagConstraints.insets = new Insets(10, 10, 10, 10);
             newGridBagConstraints.anchor = GridBagConstraints.LINE_START;
-            settingsFrame.add(new JLabel("Verified: "), newGridBagConstraints);
+
+            settingsFrame.add(new JLabel("Verified: " + accountInfoPageDBHandler.isVerified(this.userName)), newGridBagConstraints);
+
+
             newGridBagConstraints.gridy = 1;
 
             settingsFrame.add(new JButton("Delete Account"), newGridBagConstraints);
@@ -56,11 +62,12 @@ public class AccountInfoPage extends JPanel {
         });
 
     }
-    public void setUserNameContext(String userName){
-        this.userName= userName;
+
+    public void setUserNameContext(String userName) {
+        this.userName = userName;
     }
 
-    public void updateContent(){
+    public void updateContent() {
         this.userNameLabel.setText("UserName: " + this.userName);
         revalidate();
         repaint();

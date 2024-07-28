@@ -51,10 +51,14 @@ public class AccountCreationPage extends JPanel {
             String emailString = emailField.getText();
             String passwordString = new String(passwordField.getPassword());
             String usernameString = userNameField.getText();
+
             if (!isValidEmailAddress(emailString))
                 showMessageDialog(this, "Email not valid", "Error", JOptionPane.ERROR_MESSAGE);
-            else if(emailString.equals("LULU@gmail.com")){
-                showMessageDialog(this, "Account Already exists try logging in", "Error", JOptionPane.ERROR_MESSAGE);
+            else if(!accountCreationPageDBHandler.checkUniqueUsername(usernameString)  ) {
+                showMessageDialog(this, "UserName already exists try logging in", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+            else if( !accountCreationPageDBHandler.checkUniqueEmail(emailString) ){
+                showMessageDialog(this, "Email already exists try logging in", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else if(passwordString.isEmpty()){
                 showMessageDialog(this, "Password is empty", "Error", JOptionPane.ERROR_MESSAGE);
@@ -63,7 +67,6 @@ public class AccountCreationPage extends JPanel {
                 showMessageDialog(this, "Username is empty", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else{
-                //TODO: database insert, INSERT into ACCOUNTS(usernameString,0, passwordString, emailString, 100)
                 accountCreationPageDBHandler.addAccount(usernameString, passwordString, emailString);
                 accountInfoPage.setUserNameContext(usernameString);
                 accountInfoPage.updateContent();
