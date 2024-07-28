@@ -59,7 +59,7 @@ public class AccountInfoPageDBHandler implements AccountInfoPageDelegate {
 
     @Override
     public ResultSet getUpdatedCharacterInfo(String username) {
-        String query = "SELECT NAME,LVL,CLASS, FROM CHARACTERS WHERE USERNAME = ?";
+        String query = "SELECT NAME,LVL,CLASS FROM CHARACTERS WHERE ACCNAME = ?";
 
         try{
             Connection connection = dbHandler.getConnection();

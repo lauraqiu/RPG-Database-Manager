@@ -44,7 +44,6 @@ public class AccountInfoPage extends JPanel {
         gridBagConstraints.gridx = -2;
         add(settingsButton, gridBagConstraints);
         this.updateCharacters();
-        add(charactersTable, gridBagConstraints);
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 1.0;
@@ -120,7 +119,7 @@ public class AccountInfoPage extends JPanel {
             gridBagConstraints.gridy = 3;
 
             add(this.charactersTable, gridBagConstraints);
-            
+
         }
 
     }
