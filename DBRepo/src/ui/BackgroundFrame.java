@@ -23,10 +23,11 @@ public class BackgroundFrame extends JFrame
         LoginPage loginPage = new LoginPage(this);
         AccountInfoPage accountInfoPage = new AccountInfoPage(this, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
-
+        CharacterCreationPage characterCreationPage = new CharacterCreationPage();
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");
         panel.add(accountInfoPage, "accountInfoPage");
+        panel.add(characterCreationPage, "characterCreationPage");
         setSize(1020,800);
         add(panel);
 
@@ -38,6 +39,9 @@ public class BackgroundFrame extends JFrame
     }
     public void navigateToLoginPage(){
         cardLayout.show(panel, "loginPage");
+    }
+    public void navigateToCharacterCreationPage(){
+        cardLayout.show(panel, "characterCreationPage");
     }
     public void navigateToAccountInfoPage(){
         cardLayout.show(panel, "accountInfoPage");

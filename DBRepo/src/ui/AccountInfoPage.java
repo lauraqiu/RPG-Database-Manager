@@ -13,6 +13,10 @@ public class AccountInfoPage extends JPanel {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
+        JButton settingsButton = new JButton("Settings");
+        JButton friendsButton = new JButton("Friends");
+        JButton logoutButton = new JButton("Logout");
+        JButton createCharacterButton = new JButton("Create Character");
         userNameLabel = new JLabel("User Name:" + this.userName);
 
         gridBagConstraints.gridx = 0;
@@ -21,9 +25,9 @@ public class AccountInfoPage extends JPanel {
         gridBagConstraints.anchor = GridBagConstraints.NORTHWEST;
         add(userNameLabel, gridBagConstraints);
 
-        JButton friendsButton = new JButton("Friends");
-        JButton logoutButton = new JButton("Logout");
-        JButton settingsButton = new JButton("Settings");
+        gridBagConstraints.gridy = 2;
+        add(createCharacterButton, gridBagConstraints);
+
         gridBagConstraints.gridx = 1;
         add(friendsButton, gridBagConstraints);
         gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
@@ -37,6 +41,14 @@ public class AccountInfoPage extends JPanel {
         gridBagConstraints.weighty = 1.0;
         gridBagConstraints.fill = GridBagConstraints.BOTH;
         add(new JPanel(), gridBagConstraints);
+
+        createCharacterButton.addActionListener(t -> {
+            backgroundFrame.navigateToCharacterCreationPage();
+        });
+
+        logoutButton.addActionListener(v -> {
+            backgroundFrame.navigateToLoginPage();
+        });
 
         settingsButton.addActionListener(e -> {
             JFrame settingsFrame = new JFrame("Settings");
@@ -59,7 +71,6 @@ public class AccountInfoPage extends JPanel {
             settingsFrame.setLocationRelativeTo(this);
             settingsFrame.setVisible(true);
             settingsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
 
         });
 
