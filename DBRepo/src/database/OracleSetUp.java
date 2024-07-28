@@ -1,3 +1,9 @@
+package database;
+
+import delegates.LoginWindowDelegate;
+import ui.BackgroundFrame;
+import ui.LoginWindow;
+
 public class OracleSetUp implements LoginWindowDelegate {
     DbHandler dbHandler;
     LoginWindow loginWindow;
@@ -11,7 +17,7 @@ public class OracleSetUp implements LoginWindowDelegate {
         if (didConnect) {
             // Once connected, remove login window and start text transaction flow
             loginWindow.dispose();
-            BackgroundFrame backgroundFrame = new BackgroundFrame();
+            BackgroundFrame backgroundFrame = new BackgroundFrame(dbHandler);
             backgroundFrame.setVisible(true);
 
         } else {

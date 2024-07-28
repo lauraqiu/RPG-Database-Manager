@@ -1,3 +1,7 @@
+package ui;
+
+import database.DbHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -5,16 +9,16 @@ public class BackgroundFrame extends JFrame
 {
     CardLayout cardLayout;
     JPanel panel;
-    DbHandler dbHandler;
+//    DbHandler dbHandler;
     LoginWindow loginWindow;
 
-    public BackgroundFrame(){
+    public BackgroundFrame(DbHandler dbHandler){
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
 
         LoginPage loginPage = new LoginPage(this);
         AccountInfoPage accountInfoPage = new AccountInfoPage(this);
-        AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage);
+        AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, dbHandler);
 
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");

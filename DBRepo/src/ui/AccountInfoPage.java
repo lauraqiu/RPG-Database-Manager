@@ -1,6 +1,7 @@
+package ui;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionListener;
 
 public class AccountInfoPage extends JPanel {
     public String userName;

@@ -1,10 +1,10 @@
 CREATE TABLE Accounts
 (
     username   VARCHAR(20) PRIMARY KEY,
-    isVerified BOOLEAN,
+    isVerified NUMBER(1,0),
     password   VARCHAR(20)         NOT NULL,
     email      VARCHAR(320) UNIQUE NOT NULL,
-    InvSlots   INT(3)              NOT NULL
+    InvSlots   INT              NOT NULL
 );
 
 -- CREATE TABLE Friends

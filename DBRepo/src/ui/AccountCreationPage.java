@@ -1,10 +1,14 @@
+package ui;
+
+import ui_logic.AccountCreationPageDBHandler;
+
 import javax.swing.*;
 import java.awt.*;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
 public class AccountCreationPage extends JPanel {
-    public AccountCreationPage(BackgroundFrame backgroundFrame, AccountInfoPage accountInfoPage) {
+    public AccountCreationPage(BackgroundFrame backgroundFrame, AccountInfoPage accountInfoPage, AccountCreationPageDBHandler acpDBHandler) {
         setLayout(new GridBagLayout());
 
         JLabel userName = new JLabel("UserName:");
@@ -55,6 +59,8 @@ public class AccountCreationPage extends JPanel {
                 showMessageDialog(this, "Username is empty", "Error", JOptionPane.ERROR_MESSAGE);
             }
             else{
+                //TODO: database insert, INSERT into ACCOUNTS(usernameString,0, passwordString, emailString, 100)
+
                 accountInfoPage.setUserNameContext(usernameString);
                 accountInfoPage.updateContent();
 
