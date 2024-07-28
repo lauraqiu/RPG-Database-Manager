@@ -27,7 +27,7 @@ public class AccountInfoPage extends JPanel {
 
         gridBagConstraints.gridy = 2;
         add(createCharacterButton, gridBagConstraints);
-
+        gridBagConstraints.gridy = 0;
         gridBagConstraints.gridx = 1;
         add(friendsButton, gridBagConstraints);
         gridBagConstraints.anchor = GridBagConstraints.NORTHEAST;
