@@ -15,6 +15,7 @@ public class BackgroundFrame extends JFrame
 //    DbHandler dbHandler;
     LoginWindow loginWindow;
 
+    AccountInfoPage accountInfoPage;
     public BackgroundFrame(DbHandler dbHandler){
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
@@ -22,9 +23,9 @@ public class BackgroundFrame extends JFrame
         AccountCreationPageDBHandler accountCreationPageDBHandler  = new AccountCreationPageDBHandler(dbHandler);
         AccountInfoPageDBHandler accountInfoPageDBHandler = new AccountInfoPageDBHandler(dbHandler);
         CharacterCreationDBHandler characterCreationDBHandler = new CharacterCreationDBHandler(dbHandler);
-        CharacterCreationPage characterCreationPage = new CharacterCreationPage(characterCreationDBHandler);
+        CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
         LoginPage loginPage = new LoginPage(this);
-        AccountInfoPage accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
+        accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");
@@ -48,7 +49,9 @@ public class BackgroundFrame extends JFrame
     public void navigateToAccountInfoPage(){
         cardLayout.show(panel, "accountInfoPage");
     }
-
+    public AccountInfoPage getAccountInfoPage(){
+        return this.accountInfoPage;
+    }
 
 
 }

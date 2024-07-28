@@ -6,10 +6,12 @@ import ui_logic.CharacterCreationDBHandler;
 import javax.swing.*;
 import java.awt.*;
 
+import static javax.swing.JOptionPane.showMessageDialog;
+
 public class CharacterCreationPage extends JPanel {
     String username;
 
-    public CharacterCreationPage(CharacterCreationDBHandler characterCreationDBHandler) {
+    public CharacterCreationPage(BackgroundFrame backgroundFrame, CharacterCreationDBHandler characterCreationDBHandler) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
@@ -112,6 +114,11 @@ public class CharacterCreationPage extends JPanel {
                     intelligence, dexterity, charisma, luck, race);
 
             characterCreationDBHandler.uploadCharacter(characterUpdate, this.username);
+            showMessageDialog(this, "Character Created! Click OK to continue.");
+
+            backgroundFrame.getAccountInfoPage().updateCharacters();
+            backgroundFrame.navigateToAccountInfoPage();
+
         });
     }
     public void setUserName(String userName){

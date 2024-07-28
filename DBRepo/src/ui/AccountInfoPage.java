@@ -3,21 +3,29 @@ package ui;
 import ui_logic.AccountInfoPageDBHandler;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class AccountInfoPage extends JPanel {
     public String userName;
+    public JTable charactersTable;
     private final JLabel userNameLabel;
-
+    private final AccountInfoPageDBHandler accountInfoPageDBHandler;
+    private GridBagConstraints gridBagConstraints;
     public AccountInfoPage(BackgroundFrame backgroundFrame, CharacterCreationPage characterCreationPage, AccountInfoPageDBHandler accountInfoPageDBHandler) {
+        this.accountInfoPageDBHandler = accountInfoPageDBHandler;
+
         setLayout(new GridBagLayout());
-        GridBagConstraints gridBagConstraints = new GridBagConstraints();
+        gridBagConstraints = new GridBagConstraints();
 
         JButton settingsButton = new JButton("Settings");
         JButton friendsButton = new JButton("Friends");
         JButton logoutButton = new JButton("Logout");
         JButton createCharacterButton = new JButton("Create Character");
         userNameLabel = new JLabel("User Name:" + this.userName);
+
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -35,6 +43,8 @@ public class AccountInfoPage extends JPanel {
         add(logoutButton, gridBagConstraints);
         gridBagConstraints.gridx = -2;
         add(settingsButton, gridBagConstraints);
+        this.updateCharacters();
+        add(charactersTable, gridBagConstraints);
         gridBagConstraints.gridx = 3;
         gridBagConstraints.gridy = 2;
         gridBagConstraints.weightx = 1.0;
@@ -85,5 +95,33 @@ public class AccountInfoPage extends JPanel {
         this.userNameLabel.setText("UserName: " + this.userName);
         revalidate();
         repaint();
+    }
+    public void updateCharacters(){
+        if (this.userName != null) {
+            ResultSet resultset = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
+            String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Delete"};
+            DefaultTableModel dtm = new DefaultTableModel(columnNames,0);
+            try {
+                while (resultset.next()) {
+                    String characterName = resultset.getString("CharacterName");
+                    int level = resultset.getInt("Level");
+                    String className = resultset.getString("Class");
+                    String server = "Default";
+                    JButton delete = new JButton("Delete");
+                    dtm.addRow(new Object[]{characterName,level,className,server,delete});
+                }
+            }
+            catch (SQLException e) {
+                System.out.println("uwu");
+            }
+            this.charactersTable = new JTable(dtm);
+
+            gridBagConstraints.gridx = 0;
+            gridBagConstraints.gridy = 3;
+
+            add(this.charactersTable, gridBagConstraints);
+            
+        }
+
     }
 }
