@@ -47,11 +47,13 @@ public class AccountInfoPage extends JPanel {
             newGridBagConstraints.gridy = 0;
             newGridBagConstraints.insets = new Insets(10, 10, 10, 10);
             newGridBagConstraints.anchor = GridBagConstraints.LINE_START;
-
-            settingsFrame.add(new JLabel("Verified: " + accountInfoPageDBHandler.isVerified(this.userName)), newGridBagConstraints);
-
-
+            JCheckBox statusCheckBox = new JCheckBox("isVerified", null , accountInfoPageDBHandler.isVerified(this.userName));
+            settingsFrame.add(statusCheckBox, newGridBagConstraints);
             newGridBagConstraints.gridy = 1;
+
+            statusCheckBox.addActionListener(t -> {
+                accountInfoPageDBHandler.setIsVerified(statusCheckBox.isSelected(), userName);
+            });
 
             settingsFrame.add(new JButton("Delete Account"), newGridBagConstraints);
             settingsFrame.setLocationRelativeTo(this);

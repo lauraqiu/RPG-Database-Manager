@@ -4,6 +4,7 @@ import ui_logic.AccountCreationPageDBHandler;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionListener;
 
 import static javax.swing.JOptionPane.showMessageDialog;
 
@@ -22,6 +23,7 @@ public class AccountCreationPage extends JPanel {
         JPasswordField passwordField = new JPasswordField(10);
         JTextField emailField = new JTextField(10);
         JButton enter= new JButton("Enter");
+        JButton returnToLogin= new JButton("ReturnToLogin");
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(15,15,15,15);
@@ -45,8 +47,13 @@ public class AccountCreationPage extends JPanel {
         add(emailField, gridBagConstraints);
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
+        add(returnToLogin, gridBagConstraints);
+        gridBagConstraints.gridx = 1;
         add(enter, gridBagConstraints);
 
+        returnToLogin.addActionListener(e -> {
+            backgroundFrame.navigateToLoginPage();
+        });
         enter.addActionListener(e -> {
             String emailString = emailField.getText();
             String passwordString = new String(passwordField.getPassword());
