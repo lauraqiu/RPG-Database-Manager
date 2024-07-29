@@ -4,6 +4,7 @@ import database.DbHandler;
 import ui_logic.AccountCreationPageDBHandler;
 import ui_logic.AccountInfoPageDBHandler;
 import ui_logic.CharacterCreationDBHandler;
+import ui_logic.CharacterViewPageDBHandler;
 
 import javax.swing.*;
 import java.awt.*;
@@ -23,7 +24,9 @@ public class BackgroundFrame extends JFrame
         AccountCreationPageDBHandler accountCreationPageDBHandler  = new AccountCreationPageDBHandler(dbHandler);
         AccountInfoPageDBHandler accountInfoPageDBHandler = new AccountInfoPageDBHandler(dbHandler);
         CharacterCreationDBHandler characterCreationDBHandler = new CharacterCreationDBHandler(dbHandler);
+        CharacterViewPageDBHandler characterViewPageDBHandler = new CharacterViewPageDBHandler(dbHandler);
         CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
+        CharacterViewPage characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
         LoginPage loginPage = new LoginPage(this);
         accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
@@ -31,6 +34,7 @@ public class BackgroundFrame extends JFrame
         panel.add(accountCreationPage, "accountCreationPage");
         panel.add(accountInfoPage, "accountInfoPage");
         panel.add(characterCreationPage, "characterCreationPage");
+        panel.add(characterViewPage, "characterViewPage");
         setSize(1020,800);
         add(panel);
 
@@ -48,6 +52,9 @@ public class BackgroundFrame extends JFrame
     }
     public void navigateToAccountInfoPage(){
         cardLayout.show(panel, "accountInfoPage");
+    }
+    public void navigateToCharacterViewPage(){
+        cardLayout.show(panel, "characterViewPage");
     }
     public AccountInfoPage getAccountInfoPage(){
         return this.accountInfoPage;

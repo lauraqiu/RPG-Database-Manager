@@ -124,6 +124,7 @@ public class AccountInfoPage extends JPanel {
 
             this.charactersTable = new JTable(dtm);
             this.charactersTable.getColumn("CharacterName").setCellRenderer(new ButtonCellRenderer());
+            this.charactersTable.getColumn("CharacterName").setCellEditor(new AccountInfoCellEditor(dtm, this.userName, accountInfoPageDBHandler,backgroundFrame));
             this.charactersTable.getColumn("Delete").setCellRenderer(new ButtonCellRenderer());
             this.charactersTable.getColumn("Delete").setCellEditor(new ButtonCellEditor(dtm, this.userName, accountInfoPageDBHandler));
             gridBagConstraints.gridx = 0;

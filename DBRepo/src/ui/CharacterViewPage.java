@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CharacterViewPage extends JPanel {
-    CharacterViewPage(BackgroundFrame backgroundFrame, CharacterViewPageDBHandler characterCreationDBHandler) {
+    CharacterViewPage(BackgroundFrame backgroundFrame, CharacterViewPageDBHandler characterViewPageDBHandler) {
         setLayout(new GridBagLayout());
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
 
