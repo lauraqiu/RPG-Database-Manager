@@ -27,7 +27,6 @@ public class AccountInfoPage extends JPanel {
         this.characterCreationPage = characterCreationPage;
 
         userNameLabel = rebuildPage(this.backgroundFrame, this.characterCreationPage, this.accountInfoPageDBHandler);
-
     }
 
     private JLabel rebuildPage(BackgroundFrame backgroundFrame, CharacterCreationPage characterCreationPage, AccountInfoPageDBHandler accountInfoPageDBHandler) {
@@ -40,7 +39,6 @@ public class AccountInfoPage extends JPanel {
         JButton logoutButton = new JButton("Logout");
         JButton createCharacterButton = new JButton("Create Character");
         userNameLabel = new JLabel("User Name:" + this.userName);
-
 
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
@@ -71,6 +69,10 @@ public class AccountInfoPage extends JPanel {
             backgroundFrame.navigateToCharacterCreationPage();
         });
 
+        friendsButton.addActionListener(e -> {
+            backgroundFrame.navigateToFriendsPage();
+        });
+
         logoutButton.addActionListener(v -> {
             backgroundFrame.navigateToLoginPage();
         });
@@ -96,7 +98,6 @@ public class AccountInfoPage extends JPanel {
             settingsFrame.setLocationRelativeTo(this);
             settingsFrame.setVisible(true);
             settingsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
         });
         return userNameLabel;
     }
@@ -110,6 +111,7 @@ public class AccountInfoPage extends JPanel {
         revalidate();
         repaint();
     }
+
     public void updateCharacters(){
         if (this.userName != null) {
             String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Date Created", "Delete" };
@@ -142,4 +144,7 @@ public class AccountInfoPage extends JPanel {
         rebuildPage(this.backgroundFrame, this.characterCreationPage, this.accountInfoPageDBHandler);
     }
 
+    public AccountInfoPageDBHandler getAccountInfoPageDBHandler() {
+        return accountInfoPageDBHandler;
+    }
 }
