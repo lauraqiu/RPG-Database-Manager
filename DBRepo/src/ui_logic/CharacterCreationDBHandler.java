@@ -22,7 +22,7 @@ public class CharacterCreationDBHandler implements CharacterCreationPageDelegate
         PrintablePreparedStatement ps = null;
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-
+            //TODO fix this time
             ps.setString(1, String.valueOf(System.currentTimeMillis()));
             ps.setString(2, character.getUsername());
             ps.setString(3, character.getName());

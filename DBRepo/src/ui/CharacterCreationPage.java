@@ -116,7 +116,7 @@ public class CharacterCreationPage extends JPanel {
             characterCreationDBHandler.uploadCharacter(characterUpdate, this.username);
             showMessageDialog(this, "Character Created! Click OK to continue.");
 
-            backgroundFrame.getAccountInfoPage().updateCharacters();
+            backgroundFrame.getAccountInfoPage().updateCharacterPage();
             backgroundFrame.navigateToAccountInfoPage();
 
         });

@@ -16,9 +16,20 @@ public class AccountInfoPage extends JPanel {
     private final JLabel userNameLabel;
     private final AccountInfoPageDBHandler accountInfoPageDBHandler;
     private GridBagConstraints gridBagConstraints;
+    private BackgroundFrame backgroundFrame;
+    private CharacterCreationPage characterCreationPage;
+
     public AccountInfoPage(BackgroundFrame backgroundFrame, CharacterCreationPage characterCreationPage, AccountInfoPageDBHandler accountInfoPageDBHandler) {
         this.accountInfoPageDBHandler = accountInfoPageDBHandler;
+        this.backgroundFrame = backgroundFrame;
+        this.characterCreationPage = characterCreationPage;
 
+        userNameLabel = rebuildPage(this.backgroundFrame, this.characterCreationPage, this.accountInfoPageDBHandler);
+
+    }
+
+    private JLabel rebuildPage(BackgroundFrame backgroundFrame, CharacterCreationPage characterCreationPage, AccountInfoPageDBHandler accountInfoPageDBHandler) {
+        final JLabel userNameLabel;
         setLayout(new GridBagLayout());
         gridBagConstraints = new GridBagConstraints();
 
@@ -85,7 +96,7 @@ public class AccountInfoPage extends JPanel {
             settingsFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         });
-
+        return userNameLabel;
     }
 
     public void setUserNameContext(String userName) {
@@ -99,22 +110,29 @@ public class AccountInfoPage extends JPanel {
     }
     public void updateCharacters(){
         if (this.userName != null) {
-            String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Delete"};
+            String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Date Created", "Delete" };
             Object[][] queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
 
             DefaultTableModel dtm = new DefaultTableModel(columnNames,0);
             for (Object[] objects : queryResult) {
-                JButton delete = new JButton("Delete");
-                dtm.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3], delete});
+                dtm.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3], objects[4], "delete" });
             }
-            this.charactersTable = new JTable(dtm);
 
+            this.charactersTable = new JTable(dtm);
+            this.charactersTable.getColumn("Delete").setCellRenderer(new ButtonCellRenderer());
+            this.charactersTable.getColumn("Delete").setCellEditor(new ButtonCellEditor(dtm, this.userName, accountInfoPageDBHandler));
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 3;
-
-            add(this.charactersTable, gridBagConstraints);
+            JScrollPane scrollPane = new JScrollPane(this.charactersTable);
+            add(scrollPane, gridBagConstraints);
+            revalidate();
+            repaint();
 
         }
-
     }
+    public void updateCharacterPage(){
+        this.removeAll();
+        rebuildPage(this.backgroundFrame, this.characterCreationPage, this.accountInfoPageDBHandler);
+    }
+
 }
