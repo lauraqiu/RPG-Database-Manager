@@ -6,6 +6,7 @@ import ui_logic.AccountInfoPageDBHandler;
 import ui_logic.CharacterCreationDBHandler;
 import ui_logic.CharacterViewPageDBHandler;
 import ui_logic.LoginPageDBHandler;
+import ui_logic.*;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,6 +16,7 @@ public class BackgroundFrame extends JFrame {
     JPanel panel;
     AccountInfoPage accountInfoPage;
     CharacterViewPage characterViewPage;
+    InventoryViewPage inventoryViewPage;
 
     public BackgroundFrame(DbHandler dbHandler){
         cardLayout = new CardLayout();
@@ -27,10 +29,14 @@ public class BackgroundFrame extends JFrame {
         LoginPageDBHandler loginPageDBHandler = new LoginPageDBHandler(dbHandler);
 
         // Create pages
+        InventoryViewPageDBHandler inventoryViewPageDBHandler = new InventoryViewPageDBHandler(dbHandler);
         CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
         characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
         InventoryViewPage inventoryViewPage = new InventoryViewPage();
         LoginPage loginPage = new LoginPage(this, loginPageDBHandler);
+        characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
+        inventoryViewPage = new InventoryViewPage(this, inventoryViewPageDBHandler);
+        LoginPage loginPage = new LoginPage(this);
         accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
         FriendsPage friendsPage = new FriendsPage(this, accountInfoPage); // Add FriendsPage
@@ -76,7 +82,7 @@ public class BackgroundFrame extends JFrame {
         cardLayout.show(panel, "inventoryViewPage");
     }
 
-    public AccountInfoPage getAccountInfoPage () {
+    public AccountInfoPage getAccountInfoPage() {
         return this.accountInfoPage;
     }
     public CharacterViewPage getCharacterViewPage(){
@@ -86,4 +92,13 @@ public class BackgroundFrame extends JFrame {
     public void navigateToFriendsPage() {
         cardLayout.show(panel, "friendsPage");
     }
+
+    public CharacterViewPage getCharacterViewPage() {
+        return this.characterViewPage;
+    }
+
+    public InventoryViewPage getInventoryViewPage() {
+        return this.inventoryViewPage;
+    }
 }
+

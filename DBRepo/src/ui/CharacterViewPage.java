@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 
 public class CharacterViewPage extends JPanel {
-    String username;
+    String username = null;
     String characterID;
     private BackgroundFrame backgroundFrame;
     private GridBagConstraints gridBagConstraints;
@@ -117,6 +117,8 @@ public class CharacterViewPage extends JPanel {
         add(Inventory, gridBagConstraints);
 
         Inventory.addActionListener(e -> {
+            backgroundFrame.getInventoryViewPage().setUserNameContext(this.username);
+            backgroundFrame.getInventoryViewPage().updateCharacters();
             backgroundFrame.navigateToInventoryViewPage();
         });
     }
@@ -127,6 +129,10 @@ public class CharacterViewPage extends JPanel {
     public void setCharacterID(String characterID){
         this.characterID = characterID;
     }
-
+    public void setUserNameContext(String userName) {
+        this.username = userName;
+        revalidate();
+        repaint();
+    }
 
 }
