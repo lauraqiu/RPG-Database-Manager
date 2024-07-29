@@ -27,6 +27,7 @@ public class BackgroundFrame extends JFrame
         CharacterViewPageDBHandler characterViewPageDBHandler = new CharacterViewPageDBHandler(dbHandler);
         CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
         CharacterViewPage characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
+        InventoryViewPage inventoryViewPage  = new InventoryViewPage();
         LoginPage loginPage = new LoginPage(this);
         accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
@@ -35,6 +36,7 @@ public class BackgroundFrame extends JFrame
         panel.add(accountInfoPage, "accountInfoPage");
         panel.add(characterCreationPage, "characterCreationPage");
         panel.add(characterViewPage, "characterViewPage");
+        panel.add(inventoryViewPage, "inventoryViewPage");
         setSize(1020,800);
         add(panel);
 
@@ -55,6 +57,9 @@ public class BackgroundFrame extends JFrame
     }
     public void navigateToCharacterViewPage(){
         cardLayout.show(panel, "characterViewPage");
+    }
+    public void navigateToInventoryViewPage(){
+        cardLayout.show(panel, "inventoryViewPage");
     }
     public AccountInfoPage getAccountInfoPage(){
         return this.accountInfoPage;

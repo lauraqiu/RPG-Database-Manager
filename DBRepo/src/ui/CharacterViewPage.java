@@ -28,6 +28,12 @@ public class CharacterViewPage extends JPanel {
         JLabel luckString = new JLabel("Luck:");
         JLabel raceString = new JLabel("Race:");
 
+        JButton Inventory = new JButton("Inventory");
+
+        add(Inventory, gridBagConstraints);
+        Inventory.addActionListener(e -> {
+            backgroundFrame.navigateToInventoryViewPage();
+        });
 
     }
 
