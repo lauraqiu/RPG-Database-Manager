@@ -26,7 +26,7 @@ public class ButtonCellEditor extends DefaultCellEditor {
         label = (String) value;
         button.setText(label);
         button.addActionListener(e -> {
-            this.handler.removeCharacter(table.getValueAt(row, 4).toString(), username);
+            this.handler.removeCharacter(model.getValueAt(row, 4).toString(), username);
             model.removeRow(row);
         });
         return button;

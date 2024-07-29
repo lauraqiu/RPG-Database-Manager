@@ -123,6 +123,7 @@ public class AccountInfoPage extends JPanel {
             }
 
             this.charactersTable = new JTable(dtm);
+            this.charactersTable.removeColumn(this.charactersTable.getColumnModel().getColumn(4));
             this.charactersTable.getColumn("CharacterName").setCellRenderer(new ButtonCellRenderer());
             this.charactersTable.getColumn("CharacterName").setCellEditor(new AccountInfoCellEditor(dtm, this.userName, accountInfoPageDBHandler,backgroundFrame));
             this.charactersTable.getColumn("Delete").setCellRenderer(new ButtonCellRenderer());
