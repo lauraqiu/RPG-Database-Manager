@@ -23,7 +23,7 @@ public class AccountCreationPage extends JPanel {
         JPasswordField passwordField = new JPasswordField(10);
         JTextField emailField = new JTextField(10);
         JButton enter= new JButton("Enter");
-        JButton returnToLogin= new JButton("ReturnToLogin");
+        JButton returnToLogin= new JButton("Return To Login");
 
         GridBagConstraints gridBagConstraints = new GridBagConstraints();
         gridBagConstraints.insets = new Insets(15,15,15,15);
@@ -90,5 +90,4 @@ public class AccountCreationPage extends JPanel {
         java.util.regex.Matcher m = p.matcher(email);
         return m.matches();
     }
-
 }

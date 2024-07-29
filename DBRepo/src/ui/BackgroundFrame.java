@@ -19,7 +19,7 @@ public class BackgroundFrame extends JFrame {
         cardLayout = new CardLayout();
         panel = new JPanel(cardLayout);
 
-        AccountCreationPageDBHandler accountCreationPageDBHandler  = new AccountCreationPageDBHandler(dbHandler);
+        AccountCreationPageDBHandler accountCreationPageDBHandler = new AccountCreationPageDBHandler(dbHandler);
         AccountInfoPageDBHandler accountInfoPageDBHandler = new AccountInfoPageDBHandler(dbHandler);
         CharacterCreationDBHandler characterCreationDBHandler = new CharacterCreationDBHandler(dbHandler);
         CharacterViewPageDBHandler characterViewPageDBHandler = new CharacterViewPageDBHandler(dbHandler);
@@ -28,22 +28,30 @@ public class BackgroundFrame extends JFrame {
         // Create pages
         CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
         CharacterViewPage characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
-        InventoryViewPage inventoryViewPage  = new InventoryViewPage();
+        InventoryViewPage inventoryViewPage = new InventoryViewPage();
         LoginPage loginPage = new LoginPage(this, loginPageDBHandler);
         accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
+        FriendsPage friendsPage = new FriendsPage(this, accountInfoPage); // Add FriendsPage
+
+        // Add pages to panel
         panel.add(loginPage, "loginPage");
         panel.add(accountCreationPage, "accountCreationPage");
         panel.add(accountInfoPage, "accountInfoPage");
         panel.add(characterCreationPage, "characterCreationPage");
         panel.add(characterViewPage, "characterViewPage");
         panel.add(inventoryViewPage, "inventoryViewPage");
-        setSize(1020,800);
+        setSize(1020, 800);
+        panel.add(friendsPage, "friendsPage"); // Add FriendsPage to layout
+
+        // Set up frame
+        setSize(1020, 800);
         add(panel);
 
         cardLayout.show(panel, "loginPage");
     }
-    public void navigateToCreateAccountPage(){
+
+    public void navigateToCreateAccountPage() {
         cardLayout.show(panel, "accountCreationPage");
     }
 
@@ -62,12 +70,16 @@ public class BackgroundFrame extends JFrame {
     public void navigateToCharacterViewPage() {
         cardLayout.show(panel, "characterViewPage");
     }
-    public void navigateToInventoryViewPage(){
+
+    public void navigateToInventoryViewPage() {
         cardLayout.show(panel, "inventoryViewPage");
     }
-    public AccountInfoPage getAccountInfoPage(){
 
-    public AccountInfoPage getAccountInfoPage() {
+    public AccountInfoPage getAccountInfoPage () {
         return this.accountInfoPage;
+    }
+
+    public void navigateToFriendsPage() {
+        cardLayout.show(panel, "friendsPage"); // Adjusted to the correct panel name
     }
 }
