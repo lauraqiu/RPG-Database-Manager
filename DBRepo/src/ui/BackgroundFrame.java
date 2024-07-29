@@ -80,6 +80,6 @@ public class BackgroundFrame extends JFrame {
     }
 
     public void navigateToFriendsPage() {
-        cardLayout.show(panel, "friendsPage"); // Adjusted to the correct panel name
+        cardLayout.show(panel, "friendsPage");
     }
 }
