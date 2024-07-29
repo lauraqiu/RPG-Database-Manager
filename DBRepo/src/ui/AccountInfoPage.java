@@ -1,5 +1,6 @@
 package ui;
 
+import Models.CharacterRetrievalInfo;
 import ui_logic.AccountInfoPageDBHandler;
 
 import javax.swing.*;
@@ -7,6 +8,7 @@ import javax.swing.table.*;
 import java.awt.*;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Vector;
 
@@ -111,14 +113,17 @@ public class AccountInfoPage extends JPanel {
     public void updateCharacters(){
         if (this.userName != null) {
             String[] columnNames = {"CharacterName", "Level", "Class", "Server", "Date Created", "Delete" };
-            Object[][] queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
+            ArrayList<CharacterRetrievalInfo> queryResult = accountInfoPageDBHandler.getUpdatedCharacterInfo(this.userName);
 
             DefaultTableModel dtm = new DefaultTableModel(columnNames,0);
-            for (Object[] objects : queryResult) {
-                dtm.addRow(new Object[]{objects[0], objects[1], objects[2], objects[3], objects[4], "delete" });
+            for ( CharacterRetrievalInfo characterRetrievalInfo : queryResult) {
+                dtm.addRow(new Object[]{characterRetrievalInfo.getName(),
+                        characterRetrievalInfo.getLevel(), characterRetrievalInfo.getClassString(),
+                        characterRetrievalInfo.getServer(), characterRetrievalInfo.getId(), "delete" });
             }
 
             this.charactersTable = new JTable(dtm);
+            this.charactersTable.getColumn("CharacterName").setCellRenderer(new ButtonCellRenderer());
             this.charactersTable.getColumn("Delete").setCellRenderer(new ButtonCellRenderer());
             this.charactersTable.getColumn("Delete").setCellEditor(new ButtonCellEditor(dtm, this.userName, accountInfoPageDBHandler));
             gridBagConstraints.gridx = 0;

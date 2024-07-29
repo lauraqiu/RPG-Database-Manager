@@ -1,5 +1,6 @@
 package ui_logic;
 
+import Models.CharacterRetrievalInfo;
 import database.DbHandler;
 import delegates.AccountInfoPageDelegate;
 import utilities.PrintablePreparedStatement;
@@ -7,6 +8,7 @@ import utilities.PrintablePreparedStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class AccountInfoPageDBHandler implements AccountInfoPageDelegate {
     DbHandler dbHandler;
@@ -58,7 +60,7 @@ public class AccountInfoPageDBHandler implements AccountInfoPageDelegate {
     }
 
     @Override
-    public Object[][] getUpdatedCharacterInfo(String username) {
+    public ArrayList<CharacterRetrievalInfo> getUpdatedCharacterInfo(String username) {
         String query = "SELECT NAME,LVL,CLASS,ID FROM CHARACTERS WHERE ACC_USER = ?";
 
         try{
@@ -66,16 +68,21 @@ public class AccountInfoPageDBHandler implements AccountInfoPageDelegate {
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1,username);
             ResultSet rs = ps.executeQuery();
-            Object[][] queryResults = new Object[10][5];//fetchsize is wrong and its why were getting 10 results most of which are null
+            ArrayList<CharacterRetrievalInfo> queryResults = new ArrayList<>();
+
             int i = 0;
             while (rs.next()) {
-                queryResults[i][0] = rs.getString("NAME");
-                queryResults[i][1] = rs.getInt("LVL");
-                queryResults[i][2] = rs.getString("CLASS");
-                queryResults[i][3] = "NONE";
-                queryResults[i][4] = rs.getString("ID");
+                queryResults.add(
+                        new CharacterRetrievalInfo(rs.getString("NAME"),
+                                rs.getInt("LVL"),
+                                rs.getString("CLASS"),
+                                "NONE",
+                                rs.getString("ID")
+                                ));
+
                 i++;
             }
+
             ps.executeUpdate();
             connection.commit();
             ps.close();
