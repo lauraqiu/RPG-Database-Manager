@@ -28,7 +28,9 @@ public class AccountInfoCellEditor extends DefaultCellEditor {
         label = (String) value;
         button.setText(label);
         button.addActionListener(e -> {
-
+            this.backgroundFrame.getCharacterViewPage().setCharacterID(model.getValueAt(row, 4).toString());
+            this.backgroundFrame.getCharacterViewPage().setUserName(username);
+            this.backgroundFrame.getCharacterViewPage().buildPage();
             this.backgroundFrame.navigateToCharacterViewPage();
         });
         return button;

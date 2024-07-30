@@ -23,7 +23,7 @@ public class CharacterCreationDBHandler implements CharacterCreationPageDelegate
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             //TODO fix this time
-            ps.setString(1, String.valueOf(System.currentTimeMillis()));
+            ps.setString(1, character.getId());
             ps.setString(2, character.getUsername());
             ps.setString(3, character.getName());
             ps.setString(4, character.getClassString());
@@ -31,14 +31,14 @@ public class CharacterCreationDBHandler implements CharacterCreationPageDelegate
             ps.setInt(6, character.getHeight());
             ps.setInt(7, character.getWeight());
             ps.setString(8, character.getRace());
-            ps.setInt(9, 0);
-            ps.setInt(10, 1000);
+            ps.setInt(9, character.getLvl());
+            ps.setInt(10, character.getMoney());
             ps.setInt(11, character.getStrength());
             ps.setInt(12, character.getIntelligence());
             ps.setInt(13, character.getCharisma());
             ps.setInt(14, character.getDexterity());
             ps.setInt(15, character.getLuck());
-            ps.setInt(16, 0);
+            ps.setInt(16, character.getInvslots());
 
             ps.executeUpdate();
             connection.commit();

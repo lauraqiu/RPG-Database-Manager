@@ -109,9 +109,11 @@ public class CharacterCreationPage extends JPanel {
             int charisma = charismaSlider.getValue();
             int luck = luckSlider.getValue();
 
-            CharacterModel characterUpdate = new CharacterModel(name,
-                    className,this.username, age, height, weight, strength,
-                    intelligence, dexterity, charisma, luck, race);
+            CharacterModel characterUpdate = new CharacterModel(
+                    String.valueOf(System.currentTimeMillis()),this.username, "none",
+                    name, className, race,
+                    age, height, weight,
+                    1, strength, intelligence, dexterity, charisma, luck, 1000, 50);
 
             characterCreationDBHandler.uploadCharacter(characterUpdate, this.username);
             showMessageDialog(this, "Character Created! Click OK to continue.");
