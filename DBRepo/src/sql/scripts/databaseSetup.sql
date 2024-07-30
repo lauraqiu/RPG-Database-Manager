@@ -7,25 +7,33 @@ CREATE TABLE Accounts
     InvSlots   INT                 NOT NULL
 );
 
--- CREATE TABLE Friends
--- (
---     user   VARCHAR(20) PRIMARY KEY,
---     friend VARCHAR(20),
---     FOREIGN KEY (user) REFERENCES Accounts (username) ON DELETE CASCADE,
---     FOREIGN KEY (friend) REFERENCES Accounts (username) ON DELETE CASCADE
--- );
---
+CREATE TABLE Friends
+(
+    username   VARCHAR(20) PRIMARY KEY,
+    friend     VARCHAR(20),
+    FOREIGN KEY (username) REFERENCES Accounts (username) ON DELETE CASCADE,
+    FOREIGN KEY (friend) REFERENCES Accounts (username) ON DELETE CASCADE
+);
+
+CREATE TABLE Servers
+(
+    name     VARCHAR(20),
+    location VARCHAR(20),
+    capacity INT,
+    PRIMARY KEY (name, location)
+);
+
 CREATE TABLE Characters
 (
     ID           VARCHAR(20),
-    Acc_User      VARCHAR(20),
+    Acc_User     VARCHAR(20),
     name         VARCHAR(20)   NOT NULL,
     class        VARCHAR(20)   NOT NULL,
     age          INT           NOT NULL,
     height       INT           NOT NULL,
     weight       INT           NOT NULL,
     race         VARCHAR(20)   NOT NULL,
-    lvl        INT DEFAULT 1 NOT NULL,
+    lvl          INT DEFAULT 1 NOT NULL,
     money        INT DEFAULT 0 NOT NULL,
     strength     INT DEFAULT 1 NOT NULL,
     intelligence INT DEFAULT 1 NOT NULL,
@@ -35,6 +43,40 @@ CREATE TABLE Characters
     InvSlots     INT           NOT NULL,
     PRIMARY KEY (ID, Acc_User),
     FOREIGN KEY (Acc_User) REFERENCES Accounts (username) ON DELETE CASCADE
+-- TODO: add serverlocation field foreign key to server table
+);
+
+CREATE TABLE Items
+(
+    name        VARCHAR(20) PRIMARY KEY,
+    isKey       NUMBER(1,0) DEFAULT 0,
+    description VARCHAR(100)
+);
+
+CREATE TABLE Consumables
+(
+    itemName    VARCHAR(20) PRIMARY KEY,
+    maxStack    INT,
+    FOREIGN KEY (itemName) REFERENCES Items (name) ON DELETE CASCADE
+);
+
+CREATE TABLE Equipments
+(
+    itemName     VARCHAR(20) PRIMARY KEY,
+    type         VARCHAR(20) NOT NULL,
+    strength     INT,
+    intelligence INT,
+    charisma     INT,
+    dexterity    INT,
+    luck         INT,
+    FOREIGN KEY (itemName) REFERENCES Items (name) ON DELETE CASCADE
+);
+
+CREATE TABLE Resources
+(
+    itemName     VARCHAR(20) PRIMARY KEY,
+    maxStack     INT,
+    FOREIGN KEY (itemName) REFERENCES Items (name) ON DELETE CASCADE
 );
 
 -- CREATE TABLE Equipped
@@ -44,95 +86,92 @@ CREATE TABLE Characters
 --     AccName VARCHAR(20),
 --     EqType  VARCHAR(20),
 --     PRIMARY KEY (EqName, CID, AccName),
---     FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, AccName) ON DELETE CASCADE,
---     FOREIGN KEY (EqName, EqType) REFERENCES Equipments (name, type) ON DELETE CASCADE,
+--     FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, Acc_User) ON DELETE CASCADE,
+--     FOREIGN KEY (EqName, EqType) REFERENCES Equipments (itemName, type) ON DELETE CASCADE,
 --     UNIQUE (CID, EqType)
 -- );
---
--- CREATE TABLE Inventory
--- (
---     CID     VARCHAR(20),
---     AccName VARCHAR(20),
---     slotNum INT(3),
---     stacks  INT(4) DEFAULT 1,
---     item    VARCHAR(20),
---     PRIMARY KEY (CID, AccName, slotNum),
---     FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, AccName) ON DELETE CASCADE,
---     FOREIGN KEY (item) REFERENCES Items (name)
--- );
---
--- CREATE TABLE SharedInventory
--- (
---     userID  VARCHAR(20),
---     slotNum INT(3),
---     stacks  INT(4) DEFAULT 1,
---     item    VARCHAR(20),
---     PRIMARY KEY (userID, slotNum),
---     FOREIGN KEY (userID) REFERENCES Accounts (userName) ON DELETE CASCADE,
---     FOREIGN KEY (item) REFERENCES Items (name)
--- );
---
--- CREATE TABLE Items
--- (
---     name        VARCHAR(20) PRIMARY KEY,
---     isKey       BOOLEAN DEFAULT 0,
---     description VARCHAR(100)
--- );
---
--- CREATE TABLE Consumables
--- (
---     name     VARCHAR(20) PRIMARY KEY,
---     maxStack INT(4),
---     FOREIGN KEY (name) REFERENCES Items (name) ON DELETE CASCADE
--- );
---
--- CREATE TABLE Equipments
--- (
---     name         VARCHAR(20) PRIMARY KEY,
---     type         VARCHAR(20) NOT NULL,
---     strength     INT(5),
---     intelligence INT(5),
---     charisma     INT(5),
---     dexterity    INT(5),
---     luck         INT(5),
---     FOREIGN KEY (name) REFERENCES Items (name) ON DELETE CASCADE
--- );
---
--- CREATE TABLE Resources
--- (
---     name     VARCHAR(20) PRIMARY KEY,
---     maxStack INT(4),
---     FOREIGN KEY (name) REFERENCES Items (name) ON DELETE CASCADE
--- );
---
+
+CREATE TABLE Inventory
+(
+    CID     VARCHAR(20),
+    AccName VARCHAR(20),
+    slotNum INT,
+    stacks  INT DEFAULT 1,
+    itemName    VARCHAR(20),
+    PRIMARY KEY (CID, AccName, slotNum),
+    FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, Acc_User) ON DELETE CASCADE,
+    FOREIGN KEY (itemName) REFERENCES Items (name)
+);
+
+CREATE TABLE SharedInventory
+(
+    userID  VARCHAR(20),
+    slotNum INT,
+    stacks  INT DEFAULT 1,
+    item    VARCHAR(20),
+    PRIMARY KEY (userID, slotNum),
+    FOREIGN KEY (userID) REFERENCES Accounts (userName) ON DELETE CASCADE,
+    FOREIGN KEY (item) REFERENCES Items (name)
+);
+
 -- CREATE TABLE GlobalLeaderboard
 -- (
---     totalFame INT(15),
---     rank      int(10) UNIQUE,
+--     totalFame INT,
+--     rank      INT UNIQUE,
 --     CID       VARCHAR(20),
 --     AccName   VARCHAR(20),
 --     name      VARCHAR(20),
 --     PRIMARY KEY (CID, AccName),
---     FOREIGN KEY (CID, AccName, name) REFERENCES characters (ID, AccName, name) ON DELETE CASCADE
+--     FOREIGN KEY (CID, AccName, name) REFERENCES characters (ID, Acc_User, name) ON DELETE CASCADE
 -- );
---
+
 -- CREATE TABLE LocalLeaderboard
 -- (
---     rank     INT(10),
+--     rank     INT,
 --     ID       VARCHAR(20),
---     Fame     INT(15),
+--     Fame     INT,
 --     CID      VARCHAR(20),
 --     AccName  VARCHAR(20),
 --     location VARCHAR(20),
 --     PRIMARY KEY (ID, rank),
---     FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, AccName) ON DELETE CASCADE,
---     FOREIGN KEY (location) REFERENCES Server (location) ON DELETE CASCADE
+--     FOREIGN KEY (CID, AccName) REFERENCES Characters (ID, ACC_USER) ON DELETE CASCADE,
+--     FOREIGN KEY (location) REFERENCES Servers (location) ON DELETE CASCADE
 -- );
---
--- CREATE TABLE Server
--- (
---     name     VARCHAR(20),
---     location VARCHAR(20),
---     capacity INT(6),
---     PRIMARY KEY (name, location)
--- );
+
+INSERT ALL
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend1', 1, 'test','12@fake.ca', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend2', 1, 'test','31@fake.ca', 150)
+
+    INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+                    ('TEST1', 'test', 'char1', 'mage', 45, 130, 120, 'human', 50)
+    INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+                    ('TEST2', 'test', 'char2', 'warrior', 45, 130, 120, 'elf', 50)
+    INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+                    ('TEST3', 'test', 'char1', 'pirate', 45, 130, 120, 'dwarf', 50)
+    INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+                    ('TEST4', 'test', 'char1', 'mage', 45, 130, 120, 'human', 50)
+    INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+                    ('TEST5', 'test', 'char1', 'mage', 45, 130, 120, 'halfling', 50)
+    INTO ITEMS (name, description) VALUES ('health potion (sm)', 'a potion that restores a small amount of health.')
+    INTO CONSUMABLES (itemName, maxStack) VALUES ('health potion (sm)', 99)
+    INTO ITEMS (name, description) VALUES ('stamina potion (sm)', 'a potion that restores a small amount of stamina.')
+    INTO CONSUMABLES (itemName, maxStack) VALUES ('stamina potion (sm)', 99)
+    INTO ITEMS (name, description) VALUES ('mana potion (sm)', 'a potion that restores a small amount of mana.')
+    INTO CONSUMABLES (itemName, maxStack) VALUES ('mana potion(sm)', 99)
+
+    INTO ITEMS (name, description) VALUES ('basic helmet', 'A basic helmet worn by beginner warriors.')
+    INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('basic helmet', 'helmet', 5,0,0,0,0)
+    INTO ITEMS (name, description) VALUES ('apprentices hat', 'The worn hat of a wizards apprentice.')
+    INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('apprentices hat', 'helmet', 0,5,0,0,0)
+
+    INTO ITEMS (name, description) VALUES ('wood', 'a stack of wood, used for crafting.')
+    INTO RESOURCES (itemName, maxStack) VALUES ('wood', 99)
+    INTO ITEMS (name, description) VALUES ('stone', 'a stack of stone material used for crafting.')
+    INTO RESOURCES (itemName, maxStack) VALUES ('stone', 99)
+
+    INTO INVENTORY (CID, AccName, slotNum, itemName) VALUES ('TEST1', 'test', 1, 'basic helmet' )
+
+SELECT 1 from DUAL;
+

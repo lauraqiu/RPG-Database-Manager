@@ -37,6 +37,7 @@ public class AccountInfoPage extends JPanel {
         JButton settingsButton = new JButton("Settings");
         JButton friendsButton = new JButton("Friends");
         JButton logoutButton = new JButton("Logout");
+//        TODO: character creation button should be disabled when isverified flag is not set on the account
         JButton createCharacterButton = new JButton("Create Character");
         userNameLabel = new JLabel("User Name:" + this.userName);
 
