@@ -32,11 +32,9 @@ public class BackgroundFrame extends JFrame {
         InventoryViewPageDBHandler inventoryViewPageDBHandler = new InventoryViewPageDBHandler(dbHandler);
         CharacterCreationPage characterCreationPage = new CharacterCreationPage(this, characterCreationDBHandler);
         characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
-        InventoryViewPage inventoryViewPage = new InventoryViewPage();
         LoginPage loginPage = new LoginPage(this, loginPageDBHandler);
         characterViewPage = new CharacterViewPage(this, characterViewPageDBHandler);
         inventoryViewPage = new InventoryViewPage(this, inventoryViewPageDBHandler);
-        LoginPage loginPage = new LoginPage(this);
         accountInfoPage = new AccountInfoPage(this, characterCreationPage, accountInfoPageDBHandler);
         AccountCreationPage accountCreationPage = new AccountCreationPage(this, accountInfoPage, accountCreationPageDBHandler);
         FriendsPage friendsPage = new FriendsPage(this, accountInfoPage); // Add FriendsPage
@@ -91,10 +89,6 @@ public class BackgroundFrame extends JFrame {
 
     public void navigateToFriendsPage() {
         cardLayout.show(panel, "friendsPage");
-    }
-
-    public CharacterViewPage getCharacterViewPage() {
-        return this.characterViewPage;
     }
 
     public InventoryViewPage getInventoryViewPage() {
