@@ -151,12 +151,12 @@ CREATE TABLE SharedInventory
 
 
 
--- INSERT ALL
---     INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150)
---     INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150)
---     INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend1', 1, 'test','12@fake.ca', 150)
---     INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend2', 1, 'test','31@fake.ca', 150)
---
+INSERT ALL
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend1', 1, 'test','12@fake.ca', 150)
+    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend2', 1, 'test','31@fake.ca', 150)
+
 --     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
 --                     ('TEST1', 'test', 'char1', 'mage', 45, 130, 120, 'human', 50)
 --     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
@@ -186,5 +186,5 @@ CREATE TABLE SharedInventory
 --
 --     INTO INVENTORY (CID, Acc_User, slotNum, itemName) VALUES ('TEST1', 'test', 1, 'basic helmet' )
 --
--- SELECT 1 from DUAL;
+ SELECT 1 from DUAL;
 
