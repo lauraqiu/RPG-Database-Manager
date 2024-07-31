@@ -11,21 +11,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.sql.ResultSetMetaData;
+
 
 import static ui_logic.DBHandlerConstants.IS_VERIFIED_DEFAULT;
 import static ui_logic.DBHandlerConstants.NUM_SLOTS_DEFAULT;
 
 public class AdminViewPageDBHandler {
-
-    DbHandler dbHandler;
+    private DbHandler dbHandler;
 
     public AdminViewPageDBHandler(DbHandler dbHandler) {
         this.dbHandler = dbHandler;
     }
 
-    public void retrieveData(String query, boolean userNameSelected,
-                             boolean isVerifiedSelected, boolean passwordSelected,
-                             boolean emailSelected, boolean invSlotsSelected) {
+    public void retrieveData(String query, JCheckBox[] checkBoxes) {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
@@ -35,64 +34,48 @@ public class AdminViewPageDBHandler {
             JTable table = new JTable(tableModel);
 
             Vector<String> columnNames = new Vector<>();
-            if (userNameSelected) {
-                columnNames.add("USERNAME");
-            }
-            if (isVerifiedSelected) {
-                columnNames.add("VERIFIED");
-            }
-            if (passwordSelected) {
-                columnNames.add("PASSWORD");
-            }
-            if (emailSelected) {
-                columnNames.add("EMAIL");
-            }
-            if (invSlotsSelected) {
-                columnNames.add("INV_SLOTS");
+            for (JCheckBox checkBox : checkBoxes) {
+                // get column names of selected checkboxes
+                if (checkBox.isSelected()) {
+                    columnNames.add(checkBox.getText().toUpperCase().replace(" ", "_"));
+                }
             }
             tableModel.setColumnIdentifiers(columnNames);
 
+            // populate rows with data returned from query
             while (rs.next()) {
-
-                Vector<Object> vectorList = new Vector<>();
-
-                if (userNameSelected) {
-                    vectorList.add(rs.getString("USERNAME"));
+                Vector<Object> rowData = new Vector<>();
+                for (String columnName : columnNames) {
+                    rowData.add(rs.getObject(columnName));
                 }
-                if (isVerifiedSelected) {
-                    vectorList.add(rs.getString("ISVERIFIED"));
-                }
-                if (passwordSelected) {
-                    vectorList.add(rs.getString("PASSWORD"));
-                }
-                if (emailSelected) {
-                    vectorList.add(rs.getString("EMAIL"));
-                }
-                if (invSlotsSelected) {
-                    vectorList.add(rs.getInt("INVSLOTS"));
-                }
-                tableModel.addRow(vectorList);
+                tableModel.addRow(rowData);
             }
 
-            JScrollPane scrollPane  = new JScrollPane(table);
-            JFrame frame = new JFrame();
+            showResultTable(table);
 
-            frame.setLayout(new GridBagLayout());
-            GridBagConstraints gbc = new GridBagConstraints();
-            gbc.gridx = 0;
-            gbc.gridy = 0;
-            frame.add(scrollPane, gbc);
-            frame.setVisible(true);
-            frame.setSize(1020,800);
             ps.executeUpdate();
             connection.commit();
             ps.close();
-
         } catch (SQLException e) {
             System.out.println("ERROR");
             throw new RuntimeException(e);
         }
     }
+
+    // moved view table stuff to separate function
+    private void showResultTable(JTable table) {
+        JScrollPane scrollPane = new JScrollPane(table);
+        JFrame frame = new JFrame();
+
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(scrollPane, gbc);
+        frame.setVisible(true);
+        frame.setSize(1020, 800);
+    }
+
     public ArrayList<String> getUserNames(){
         String query = "SELECT USERNAME FROM ACCOUNTS";
 
@@ -211,5 +194,102 @@ public class AdminViewPageDBHandler {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public ResultSet queryCharacters(String condition) throws SQLException {
+        String query = "SELECT * FROM Characters WHERE " + condition;
+        Connection connection = dbHandler.getConnection();
+        PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+        return ps.executeQuery();
+    }
+
+    public ResultSet aggregationQuery(String query) throws SQLException {
+        Connection connection = dbHandler.getConnection();
+        PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+        return ps.executeQuery();
+    }
+
+    // need to fix this
+    public void equipItem(String equipment, String character, String username) {
+        String query = "INSERT INTO EQUIPPED (eqname, cid, acc_user) VALUES (?, ?, ?)";
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+            ps.setString(1, equipment);
+            ps.setString(2, character);
+            ps.setString(3, username);
+
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+
+            JOptionPane.showMessageDialog(null, "Item equipped successfully!");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error equipping item.");
+        }
+    }
+
+    public void showFullTable(String tableName) {
+        String query = "SELECT * FROM " + tableName;
+
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            ResultSetMetaData metaData = rs.getMetaData();
+            int columnCount = metaData.getColumnCount();
+
+            Vector<String> columnNames = new Vector<>();
+            for (int i = 1; i <= columnCount; i++) {
+                columnNames.add(metaData.getColumnName(i));
+            }
+
+            DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
+            JTable table = new JTable(tableModel);
+
+            while (rs.next()) {
+                Vector<Object> rowData = new Vector<>();
+                for (int i = 1; i <= columnCount; i++) {
+                    rowData.add(rs.getObject(i));
+                }
+                tableModel.addRow(rowData);
+            }
+
+            showResultTable(table);
+
+            ps.close();
+            connection.commit();
+        } catch (SQLException e) {
+            System.out.println("ERROR: Unable to fetch data from table " + tableName);
+            e.printStackTrace();
+        }
+    }
+
+    public String[] getData(String columnName, String tableName) {
+        String[] data = new String[0];
+        try {
+            Connection connection = dbHandler.getConnection();
+            String query = "SELECT " + columnName + " FROM " + tableName;
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+
+            Vector<String> dataList = new Vector<>();
+            while (rs.next()) {
+                dataList.add(rs.getString(columnName));
+            }
+
+            data = dataList.toArray(new String[0]);
+
+            connection.commit();
+            ps.close();
+        } catch (SQLException e) {
+            System.out.println("ERROR: Unable to fetch data from " + tableName);
+            e.printStackTrace();
+        }
+        return data;
     }
 }
