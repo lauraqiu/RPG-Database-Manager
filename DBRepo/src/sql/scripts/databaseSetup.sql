@@ -148,43 +148,84 @@ CREATE TABLE SharedInventory
     FOREIGN KEY (item) REFERENCES Items (name),
     UNIQUE (slotNum)
 );
+-- inserts
 
+-- Accounts
+INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150);
+INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150);
+INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend1', 1, 'test','12@fake.ca', 150);
+INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend2', 0, 'test','31@fake.ca', 150);
+INSERT INTO ACCOUNTS (USERNAME, ISVERIFIED, PASSWORD, EMAIL, INVSLOTS) VALUES ('andrew', 1, 'password','andrew@gmail.com',150);
 
+-- Characters
+INSERT INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+    ('TEST1', 'test', 'char1', 'mage', 20, 185, 90, 'human', 50);
+INSERT INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+    ('TEST2', 'test', 'char2', 'warrior', 200, 230, 60, 'elf', 50);
+INSERT INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+    ('TEST3', 'test', 'char1', 'pirate', 95, 90, 150, 'dwarf', 50);
+INSERT INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+    ('TEST4', 'test', 'char1', 'mage', 26, 150, 100, 'human', 50);
+INSERT INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
+    ('char1', 'andrew', 'charlie', 'pirate', 45, 75, 60, 'halfling', 50);
 
-INSERT ALL
-    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150)
-    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150)
-    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend1', 1, 'test','12@fake.ca', 150)
-    INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('friend2', 1, 'test','31@fake.ca', 150)
+-- DELETE FROM ITEMS;
 
---     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
---                     ('TEST1', 'test', 'char1', 'mage', 45, 130, 120, 'human', 50)
---     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
---                     ('TEST2', 'test', 'char2', 'warrior', 45, 130, 120, 'elf', 50)
---     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
---                     ('TEST3', 'test', 'char1', 'pirate', 45, 130, 120, 'dwarf', 50)
---     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
---                     ('TEST4', 'test', 'char1', 'mage', 45, 130, 120, 'human', 50)
---     INTO CHARACTERS (ID, Acc_User, name, class, age, height, weight, race, InvSlots) VALUES
---                     ('TEST5', 'test', 'char1', 'mage', 45, 130, 120, 'halfling', 50)
---     INTO ITEMS (name, description) VALUES ('health potion (sm)', 'a potion that restores a small amount of health.')
---     INTO CONSUMABLES (itemName, maxStack) VALUES ('health potion (sm)', 99)
---     INTO ITEMS (name, description) VALUES ('stamina potion (sm)', 'a potion that restores a small amount of stamina.')
---     INTO CONSUMABLES (itemName, maxStack) VALUES ('stamina potion (sm)', 99)
---     INTO ITEMS (name, description) VALUES ('mana potion (sm)', 'a potion that restores a small amount of mana.')
---     INTO CONSUMABLES (itemName, maxStack) VALUES ('mana potion(sm)', 99)
---
---     INTO ITEMS (name, description) VALUES ('basic helmet', 'A basic helmet worn by beginner warriors.')
---     INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('basic helmet', 'helmet', 5,0,0,0,0)
---     INTO ITEMS (name, description) VALUES ('apprentices hat', 'The worn hat of a wizards apprentice.')
---     INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('apprentices hat', 'helmet', 0,5,0,0,0)
---
---     INTO ITEMS (name, description) VALUES ('wood', 'a stack of wood, used for crafting.')
---     INTO RESOURCES (itemName, maxStack) VALUES ('wood', 99)
---     INTO ITEMS (name, description) VALUES ('stone', 'a stack of stone material used for crafting.')
---     INTO RESOURCES (itemName, maxStack) VALUES ('stone', 99)
---
---     INTO INVENTORY (CID, Acc_User, slotNum, itemName) VALUES ('TEST1', 'test', 1, 'basic helmet' )
---
- SELECT 1 from DUAL;
+-- Consumables
+INSERT INTO ITEMS (name, description) VALUES ('health potion (sm)', 'a potion that restores a small amount of health.');
+INSERT INTO CONSUMABLES (itemName, maxStack) VALUES ('health potion (sm)', 99);
+INSERT INTO ITEMS (name, description) VALUES ('stamina potion (sm)', 'a potion that restores a small amount of stamina.');
+INSERT INTO CONSUMABLES (itemName, maxStack) VALUES ('stamina potion (sm)', 99);
+INSERT INTO ITEMS (name, description) VALUES ('mana potion (sm)', 'a potion that restores a small amount of mana.');
+INSERT INTO CONSUMABLES (itemName, maxStack) VALUES ('mana potion (sm)', 99);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('beefy jerky', 'a small piece of beef jerky, restores a small amount of health and stamina');
+INSERT INTO CONSUMABLES (ITEMNAME, MAXSTACK) VALUES ('beefy jerky', 50);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('potion of swiftness', 'a magical potion which imbues the user with tremendous speed');
+INSERT INTO CONSUMABLES (ITEMNAME, MAXSTACK) VALUES ('potion of swiftness', 10);
+
+-- Resources
+INSERT INTO ITEMS (name, description) VALUES ('wood', 'a stack of wood, used for crafting.');
+INSERT INTO RESOURCES (itemName, maxStack) VALUES ('wood', 99);
+INSERT INTO ITEMS (name, description) VALUES ('stone', 'a stack of stone material used for crafting.');
+INSERT INTO RESOURCES (itemName, maxStack) VALUES ('stone', 99);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('iron ore', 'raw pieces of iron excavated from the mountains, can be smelted into iron bars.');
+INSERT INTO RESOURCES (ITEMNAME, MAXSTACK) VALUES ('iron ore', 99);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('iron bars', 'ingots made of solid iron, can be used to craft equipment.');
+INSERT INTO RESOURCES (ITEMNAME, MAXSTACK) VALUES ('iron bars', 30);
+INSERT INTO ITEMS (NAME, DESCRIPTION, ISKEY) VALUES ('string', 'string made from various fibers, useful for crafting clothes.', 1) ;
+INSERT INTO RESOURCES (ITEMNAME, MAXSTACK) VALUES ('string', 99);
+
+-- Equipment
+INSERT INTO ITEMS (name, description) VALUES ('basic helmet', 'A basic helmet worn by beginner warriors.');
+INSERT INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('basic helmet', 'head', 5,0,0,0,0);
+INSERT INTO ITEMS (name, description) VALUES ('apprentices hat', 'The worn hat of a wizards apprentice.');
+INSERT INTO EQUIPMENTS (itemName, type, strength, intelligence, charisma, dexterity, luck) VALUES ('apprentices hat', 'head', 0,5,0,0,0);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('leather tunic', 'simple leather tunic, worthy of a beginner adventurer!');
+INSERT INTO EQUIPMENTS (ITEMNAME, TYPE, STRENGTH, INTELLIGENCE, CHARISMA, DEXTERITY, LUCK) VALUES ('leather tunic', 'chest', 1,1,1,1,1);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('leather gloves', 'simple leather gloves, perfect for a beginner adventurer!');
+INSERT INTO EQUIPMENTS (ITEMNAME, TYPE, STRENGTH, INTELLIGENCE, CHARISMA, DEXTERITY, LUCK) VALUES ('leather gloves', 'hand', 1,1,1,1,1);
+INSERT INTO ITEMS (NAME, DESCRIPTION) VALUES ('leather boots', 'simple leather boots, ideal for a beginner adventurer.');
+INSERT INTO EQUIPMENTS (ITEMNAME, TYPE, STRENGTH, INTELLIGENCE, CHARISMA, DEXTERITY, LUCK) VALUES ('leather boots', 'foot', 1,1,1,1,1);
+
+-- inventory
+INSERT INTO INVENTORY (CID, Acc_User, slotNum, itemName) VALUES ('TEST1', 'test', 1, 'basic helmet' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 2, 'health potion (sm)');
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 3, 'wood' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 4, 'leather boots' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 5, 'leather boots' );
+
+-- equipped
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST1', 'test', 'head');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'TEST1', 'test', 'foot');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'TEST1', 'test', 'chest');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'TEST1', 'test', 'hand');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'char1' ,'andrew', 'foot');
+
+-- servers
+
+INSERT INTO SERVERS (NAME, LOCATION, CAPACITY) VALUES ('america_1', 'US_WEST', 10000 );
+INSERT INTO SERVERS (NAME, LOCATION, CAPACITY) VALUES ('america_2', 'US_WEST', 10000 );
+INSERT INTO SERVERS (NAME, LOCATION, CAPACITY) VALUES ('america_1', 'US_EAST', 10000);
+INSERT INTO SERVERS (NAME, LOCATION, CAPACITY) VALUES ('europe_1', 'EU', 5000);
+INSERT INTO SERVERS (NAME, LOCATION, CAPACITY) VALUES ('china_1', 'CHN', 15000);
 
