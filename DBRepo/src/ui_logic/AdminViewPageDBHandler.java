@@ -182,4 +182,34 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
+
+    public void getItems(){
+        String query = "SELECT * FROM ITEMS";
+
+        Connection connection = dbHandler.getConnection();
+        PrintablePreparedStatement ps = null;
+        ArrayList<String> userNames = new ArrayList<>();
+
+        JFrame itemsFrame = new JFrame();
+        itemsFrame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+
+        DefaultTableModel tableModel = new DefaultTableModel();
+        JTable table = new JTable(tableModel);
+
+        try {
+            ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getString("NAME"),
+                        rs.getInt("ISKEY") == 1 ? "True":"False",
+                        rs.getString("DESCRIPTION")}
+                );
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }
