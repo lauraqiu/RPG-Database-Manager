@@ -37,7 +37,6 @@ public class AdminViewPage extends JPanel {
                 "INVENTORY",
                 "SHAREDINVENTORY"
         });
-        JButton accounts = new JButton("Accounts");
         JButton searchButton = new JButton("Search");
 
         gridBagConstraints.gridx = 0;
@@ -50,15 +49,7 @@ public class AdminViewPage extends JPanel {
         gridBagConstraints.gridx = 2;
         topPanel.add(searchButton, gridBagConstraints);
 
-        gridBagConstraints.gridy = 2;
-        topPanel.add(accounts, gridBagConstraints);
-
         add(topPanel, BorderLayout.CENTER);
-
-        accounts.addActionListener(t  -> {
-            buildAccountPage(adminViewPageDBHandler);
-        });
-        setSearchButtonActionListener(adminViewPageDBHandler, searchButton, tableBox);
 
         searchButton.addActionListener(e -> showAttributesFrame((String) tableBox.getSelectedItem()));
 
@@ -82,7 +73,8 @@ public class AdminViewPage extends JPanel {
         bottomPanel.add(leaderboardsButton);
         bottomPanel.add(inventoriesButton);
 
-        accountsButton.addActionListener(e -> {});
+
+        accountsButton.addActionListener(e -> buildAccountPage(adminViewPageDBHandler));
         charactersButton.addActionListener(e -> new CharactersPage(adminViewPageDBHandler));
         equippedButton.addActionListener(e -> new EquippedPage(adminViewPageDBHandler));
         serversButton.addActionListener(e -> {});
@@ -302,78 +294,6 @@ public class AdminViewPage extends JPanel {
             usernameBox.remove(usernameBox.getSelectedIndex());
             accountPageFrame.dispose();
             buildAccountPage(adminViewPageDBHandler);
-        });
-    }
-
-    private void setSearchButtonActionListener(AdminViewPageDBHandler adminViewPageDBHandler, JButton searchButton, JComboBox tableBox) {
-        searchButton.addActionListener(e -> {
-            String selectedTable = (String) tableBox.getSelectedItem();
-            if (selectedTable.equals("ACCOUNTS")) {
-                JFrame accountFrame = new JFrame();
-                JLabel jLabel = new JLabel("Select Attributes");
-                JCheckBox username = new JCheckBox("UserName");
-                JCheckBox isVerified = new JCheckBox("IsVerified");
-                JCheckBox password = new JCheckBox("Password");
-                JCheckBox email = new JCheckBox("Email");
-                JCheckBox invSlots = new JCheckBox("InvSlots");
-                JButton retrieveData = new JButton("RetrieveData");
-                accountFrame.setLayout(new GridBagLayout());
-                accountFrame.add(jLabel, gridBagConstraints);
-                gridBagConstraints.gridy = 1;
-                accountFrame.add(username, gridBagConstraints);
-                gridBagConstraints.gridy = 2;
-                accountFrame.add(isVerified, gridBagConstraints);
-                gridBagConstraints.gridy = 3;
-                accountFrame.add(password, gridBagConstraints);
-                gridBagConstraints.gridy = 4;
-                accountFrame.add(email, gridBagConstraints);
-                gridBagConstraints.gridy = 5;
-                accountFrame.add(invSlots, gridBagConstraints);
-                gridBagConstraints.gridy = 6;
-                accountFrame.add(retrieveData, gridBagConstraints);
-                accountFrame.setVisible(true);
-                accountFrame.setSize(1020,800);
-                setRetrieveDataActionListener(adminViewPageDBHandler, retrieveData, username, isVerified, password, email, invSlots, accountFrame);
-            }
-        });
-    }
-
-    private static void setRetrieveDataActionListener(AdminViewPageDBHandler adminViewPageDBHandler, JButton retrieveData, JCheckBox username, JCheckBox isVerified, JCheckBox password, JCheckBox email, JCheckBox invSlots, JFrame accountFrame) {
-        retrieveData.addActionListener(t  -> {
-            StringBuilder query = new StringBuilder();
-            query.append("SELECT");
-            boolean userNameSelected = username.isSelected();
-            boolean isVerifiedSelected = isVerified.isSelected();
-            boolean passwordSelected = password.isSelected();
-            boolean emailSelected = email.isSelected();
-            boolean invSlotsSelected = invSlots.isSelected();
-            if(userNameSelected) {
-                query.append(" USERNAME,");
-            }
-            if(isVerifiedSelected) {
-                query.append(" ISVERIFIED,");
-            }
-            if(passwordSelected) {
-                query.append(" PASSWORD,");
-            }
-            if(emailSelected) {
-                query.append(" EMAIL,");
-            }
-            if(invSlotsSelected) {
-                query.append(" INVSLOTS,");
-            }
-            //We added an attribute we remove space and comma
-            if (query.length() > 7){
-                query.setLength(query.length()- 1);
-                query.append(" FROM ACCOUNTS");
-                adminViewPageDBHandler.retrieveData(query.toString(),
-                        userNameSelected, isVerifiedSelected,passwordSelected,
-                        emailSelected, invSlotsSelected);
-            }
-            //The user did not select anything
-            else {
-                JOptionPane.showMessageDialog(accountFrame, "Error: Did not select any attibutes", "ERROR" , JOptionPane.ERROR_MESSAGE);
-            }
         });
     }
 }
