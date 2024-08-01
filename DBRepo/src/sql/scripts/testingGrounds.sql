@@ -29,23 +29,26 @@
 --  provide at least one value to qualify in the where clause
 --     need to implement this query to satisfy requirement
 -- SELECT NAME, CLASS, EQTYPE, EQNAME  FROM EQUIPPED e, CHARACTERS c
--- WHERE c.ID = e.CID and c.CLASS = 'mage' ;
+-- WHERE c.ID = e.CID and c.CLASS = 'pirate' ;
+--                                     ^ variable
 
 -- TODO: AGGREGATION WITH GROUP BY
--- SELECT RACE,AVG (WEIGHT)
+-- SELECT RACE,AVG (AGE)
 -- FROM CHARACTERS
 -- group by RACE;
 
 -- TODO: AGGREGATION WITH HAVING   create one meaningful query that requires the use of a having clause
 --     query and chosen tables should make sense given the context of the application
 --
---     SELECT RACE, AVG(WEIGHT) FROM CHARACTERS
---                              GROUP BY RACE HAVING COUNT(*)>1
-
+--     SELECT RACE, CLASS, AVG(LVL), AVG(STRENGTH), AVG(INTELLIGENCE), AVG(DEXTERITY), AVG(CHARISMA), AVG(LUCK) FROM CHARACTERS
+--     GROUP BY RACE, CLASS HAVING AVG(STRENGTH) > 15 ;
+--                                      ^variable  ^variable
 -- TODO: NESTED AGGREGATION
---     SELECT RACE, CLASS, AVG(AGE) FROM CHARACTERS
---     GROUP BY RACE, CLASS
---     HAVING ;
+-- STILL NEED TO FIGURE THIS OUT
+--  NEED TO PERFORM AN AGGREGATE GROUP BY AND THEN AGGREGATE ON TOP OF THAT.
+-- SELECT MAX(AVLVL) FROM
+--                         (SELECT CLASS, AVG(LVL) AS AVLVL FROM CHARACTERS)
+-- GROUP BY CLASS;
 
 
 -- TODO: DIVISION
@@ -56,17 +59,30 @@
 --     EXCEPT
 --     (SELECT E.EQTYPE
 --               FROM EQUIPPED E))
-SELECT EQNAME
-FROM EQUIPPED E;
+-- select ALL characters who have equipped all
 
+-- SELECT ID, NAME FROM CHARACTERS C
+-- WHERE NOT EXISTS --CHECK IF BELOW EXISTS FOR EACH ID IN CHARACTERS
+--         ((SELECT distinct E.TYPE -- GET ALL EQ TYPES FROM EQUIPMENTS
+--             FROM EQUIPMENTS E)
+--                 MINUS
+--                 (SELECT EQTYPE
+--                 FROM EQUIPPED D
+--                 WHERE  D.cid = C.ID ));
+
+-- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet',    'TEST2', 'test', 'head');
+-- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots',   'TEST2', 'test', 'foot');
+-- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic',   'TEST2', 'test', 'chest');
+-- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves',  'TEST2', 'test', 'hand');
+-- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'TEST3' ,'test', 'foot');
 
 -- SELECT sname
 -- FROM Student S
--- WHERE NOT EXISTS
---           ((SELECT C.name
+-- WHERE NOT EXISTS -- CHECK IF THE BELOW EXISTS OR NOT FOR EACH NAME IN STUDENTS
+--           ((SELECT C.name --GET ALL CLASSNAMES
 --             FROM Class C)
 --               EXCEPT
---               (SELECT E.cname
+--               (SELECT E.cname -- EXCEPT WHERE A STUDENT HAS TAKEN A CLASS
 --               FROM Enrolled E
 --               WHERE E.snum=S.snum))
 
