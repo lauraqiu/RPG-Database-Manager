@@ -12,10 +12,13 @@ import java.util.Vector;
 
 public class CharactersPage extends JFrame {
     private AdminViewPageDBHandler adminViewPageDBHandler;
-    private JComboBox<String> conditionComboBox;
     private JButton submitButton;
     private JPanel tablePanel;
     private JComboBox<String> aggregationComboBox;
+    private JTextField minHeightField;
+    private JTextField maxHeightField;
+    private JTextField minWeightField;
+    private JTextField maxWeightField;
 
     public CharactersPage(AdminViewPageDBHandler adminViewPageDBHandler) {
         this.adminViewPageDBHandler = adminViewPageDBHandler;
@@ -28,25 +31,68 @@ public class CharactersPage extends JFrame {
         JPanel topPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
         gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.anchor = GridBagConstraints.WEST;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+
+        JPanel instructionsPanel = new JPanel();
+        JLabel instructionsLabel = new JLabel("Specify the height and/or weight constraints to filter characters by:");
+        instructionsLabel.setHorizontalAlignment(SwingConstants.CENTER);
+        instructionsPanel.add(instructionsLabel);
+
         gbc.gridx = 0;
         gbc.gridy = 0;
-        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(instructionsPanel, gbc);
 
-        JLabel titleLabel = new JLabel("Character:");
-        topPanel.add(titleLabel, gbc);
-
+        gbc.gridwidth = 1;
         gbc.gridy = 1;
-        String[] conditions = {
-                "--Select--",
-                "HEIGHT > 130 AND WEIGHT < 90",
-                "HEIGHT < 130",
-                "WEIGHT > 90"
-        };
-        conditionComboBox = new JComboBox<>(conditions);
-        topPanel.add(conditionComboBox, gbc);
+        JLabel heightLabel = new JLabel("Height (min):");
+        topPanel.add(heightLabel, gbc);
 
-        // Aggregation selection
+        gbc.gridx = 1;
+        minHeightField = new JTextField(5);
+        topPanel.add(minHeightField, gbc);
+
+        gbc.gridx = 2;
+        JLabel maxHeightLabel = new JLabel("Height (max):");
+        topPanel.add(maxHeightLabel, gbc);
+
+        gbc.gridx = 3;
+        maxHeightField = new JTextField(5);
+        topPanel.add(maxHeightField, gbc);
+
+        gbc.gridx = 0;
         gbc.gridy = 2;
+        JLabel weightLabel = new JLabel("Weight (min):");
+        topPanel.add(weightLabel, gbc);
+
+        gbc.gridx = 1;
+        minWeightField = new JTextField(5);
+        topPanel.add(minWeightField, gbc);
+
+        gbc.gridx = 2;
+        JLabel maxWeightLabel = new JLabel("Weight (max):");
+        topPanel.add(maxWeightLabel, gbc);
+
+        gbc.gridx = 3;
+        maxWeightField = new JTextField(5);
+        topPanel.add(maxWeightField, gbc);
+
+        gbc.gridx = 0;
+        gbc.gridy = 3;
+        gbc.gridwidth = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        JLabel aggregationInstructionLabel = new JLabel("Filter by aggregation:");
+        aggregationInstructionLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text in the label
+        topPanel.add(aggregationInstructionLabel, gbc);
+
+        gbc.gridy = 4;
+        gbc.gridwidth = 1;
+        JLabel aggregationLabel = new JLabel("Select Aggregation:");
+        topPanel.add(aggregationLabel, gbc);
+
+        gbc.gridx = 1;
         String[] aggregationOptions = {
                 "--Select Aggregation--",
                 "Group by Race and Average Age"
@@ -54,14 +100,13 @@ public class CharactersPage extends JFrame {
         aggregationComboBox = new JComboBox<>(aggregationOptions);
         topPanel.add(aggregationComboBox, gbc);
 
-        add(topPanel, BorderLayout.NORTH);
-
-        submitButton = new JButton("Submit");
+        gbc.gridx = 2;
+        gbc.gridwidth = 2;
+        submitButton = new JButton("Search");
         submitButton.addActionListener(e -> onSubmit());
+        topPanel.add(submitButton, gbc);
 
-        JPanel buttonPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        buttonPanel.add(submitButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        add(topPanel, BorderLayout.NORTH);
 
         tablePanel = new JPanel(new BorderLayout());
         add(tablePanel, BorderLayout.CENTER);
@@ -81,32 +126,40 @@ public class CharactersPage extends JFrame {
     }
 
     private void onSubmit() {
-        String selectedCondition = (String) conditionComboBox.getSelectedItem();
+        String minHeight = minHeightField.getText().trim();
+        String maxHeight = maxHeightField.getText().trim();
+        String minWeight = minWeightField.getText().trim();
+        String maxWeight = maxWeightField.getText().trim();
+
+        StringBuilder condition = new StringBuilder("1=1");
+        if (!minHeight.isEmpty()) {
+            condition.append(" AND HEIGHT >= ").append(minHeight);
+        }
+        if (!maxHeight.isEmpty()) {
+            condition.append(" AND HEIGHT <= ").append(maxHeight);
+        }
+        if (!minWeight.isEmpty()) {
+            condition.append(" AND WEIGHT >= ").append(minWeight);
+        }
+        if (!maxWeight.isEmpty()) {
+            condition.append(" AND WEIGHT <= ").append(maxWeight);
+        }
+
         String selectedAggregation = (String) aggregationComboBox.getSelectedItem();
 
-        if (selectedAggregation != null && selectedAggregation.equals("Group by Race and Average Age")) {
-            handleAggregation();
-            aggregationComboBox.setSelectedIndex(0);
-        } else if (selectedCondition != null && !selectedCondition.equals("--Select--")) {
-            try {
-                ResultSet resultSet = adminViewPageDBHandler.queryCharacters(selectedCondition);
-                displayResults(resultSet);
-                conditionComboBox.setSelectedIndex(0);
-            } catch (SQLException e) {
-                JOptionPane.showMessageDialog(this, "Error querying characters: " + e.getMessage());
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "Please select a condition or aggregation.");
-        }
-    }
-
-    private void handleAggregation() {
-        String aggregationQuery = "SELECT RACE, AVG(age) FROM CHARACTERS GROUP BY RACE";
         try {
-            ResultSet resultSet = adminViewPageDBHandler.aggregationQuery(aggregationQuery);
-            displayResults(resultSet);
+            if (selectedAggregation != null && selectedAggregation.equals("Group by Race and Average Age")) {
+                String aggregationQuery = "SELECT RACE, AVG(age) FROM CHARACTERS WHERE " + condition + " GROUP BY RACE";
+                ResultSet resultSet = adminViewPageDBHandler.aggregationQuery(aggregationQuery);
+                displayResults(resultSet);
+                aggregationComboBox.setSelectedIndex(0);
+            } else {
+                ResultSet resultSet = adminViewPageDBHandler.queryCharacters(condition.toString());
+                displayResults(resultSet);
+            }
+            JOptionPane.showMessageDialog(this, "Query successful!");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(this, "Error executing aggregation query: " + e.getMessage());
+            JOptionPane.showMessageDialog(this, "Error querying characters: " + e.getMessage());
         }
     }
 
