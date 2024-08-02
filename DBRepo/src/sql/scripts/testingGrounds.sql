@@ -56,6 +56,12 @@
 --                             FROM Characters C2
 --                             GROUP BY C.class);
 
+SELECT C.class
+FROM Characters C
+Group by C.class
+HAVING avg(c.height) <= ALL ( SELECT AVG(C2.height) FROM CHARACTERS C2 GROUP BY C2.class)
+
+
 -- TODO: DIVISION
 -- select ALL characters who have equipped all
 
