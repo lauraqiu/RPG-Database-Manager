@@ -50,20 +50,18 @@
 --                         (SELECT CLASS, AVG(LVL) AS AVLVL FROM CHARACTERS)
 -- GROUP BY CLASS;
 
+-- SELECT C.class
+-- FROM Characters C
+-- WHERE AVG(C.height) <= ALL( SELECT AVG(C.height)
+--                             FROM Characters C2
+--                             GROUP BY C.class);
 
 -- TODO: DIVISION
--- SELECT NAME
--- FROM CHARACTERS C
--- WHERE NOT EXISTS(
---     ()
---     EXCEPT
---     (SELECT E.EQTYPE
---               FROM EQUIPPED E))
 -- select ALL characters who have equipped all
 
 -- SELECT ID, NAME FROM CHARACTERS C
 -- WHERE NOT EXISTS --CHECK IF BELOW EXISTS FOR EACH ID IN CHARACTERS
---         ((SELECT distinct E.TYPE -- GET ALL EQ TYPES FROM EQUIPMENTS
+--         ((SELECT distinct E.ITEMTYPE -- GET ALL EQ TYPES FROM EQUIPMENTS
 --             FROM EQUIPMENTS E)
 --                 MINUS
 --                 (SELECT EQTYPE
