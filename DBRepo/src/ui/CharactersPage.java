@@ -84,7 +84,7 @@ public class CharactersPage extends JFrame {
         gbc.gridwidth = 4;
         gbc.fill = GridBagConstraints.HORIZONTAL;
         JLabel aggregationInstructionLabel = new JLabel("Filter by aggregation:");
-        aggregationInstructionLabel.setHorizontalAlignment(SwingConstants.CENTER); // Center text in the label
+        aggregationInstructionLabel.setHorizontalAlignment(SwingConstants.CENTER);
         topPanel.add(aggregationInstructionLabel, gbc);
 
         gbc.gridy = 4;
