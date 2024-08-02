@@ -138,13 +138,13 @@ CREATE TABLE Inventory
 
 CREATE TABLE SharedInventory
 (
-    userID  VARCHAR(20),
+    Acc_User  VARCHAR(20),
     slotNum INT,
     stacks  INT DEFAULT 1,
     itemName    VARCHAR(20),
     itemType    VARCHAR(20),
-    PRIMARY KEY (userID, slotNum),
-    FOREIGN KEY (userID) REFERENCES Accounts (userName) ON DELETE CASCADE,
+    PRIMARY KEY (Acc_User, slotNum),
+    FOREIGN KEY (Acc_User) REFERENCES Accounts (userName) ON DELETE CASCADE,
     FOREIGN KEY (itemName, itemType) REFERENCES Items (name, type),
     UNIQUE (slotNum)
 );
@@ -308,12 +308,22 @@ INSERT INTO EQUIPMENTS (ITEMNAME, itemType, STRENGTH, INTELLIGENCE, CHARISMA, DE
 INSERT INTO ITEMS (name, type, description) VALUES ('leather boots', 'foot', 'simple leather boots, ideal for a beginner adventurer.');
 INSERT INTO EQUIPMENTS (ITEMNAME, itemType, STRENGTH, INTELLIGENCE, CHARISMA, DEXTERITY, LUCK) VALUES ('leather boots', 'foot', 1,1,1,1,1);
 --
+
 -- inventory
-INSERT INTO INVENTORY (CID, Acc_User, slotNum, itemName) VALUES ('TEST1', 'test', 1, 'basic helmet' );
-INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 2, 'health potion (sm)');
-INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 3, 'wood' );
-INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 4, 'leather boots' );
-INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME) VALUES ('TEST1', 'test', 5, 'leather boots' );
+INSERT INTO INVENTORY (CID, Acc_User, slotNum, itemName, ITEMTYPE) VALUES ('TEST1', 'test', 1, 'basic helmet', 'head' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('TEST1', 'test', 2, 'health potion (sm)', 'potion');
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('TEST1', 'test', 3, 'wood', 'raw_material' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('TEST1', 'test', 4, 'leather boots', 'foot' );
+INSERT INTO INVENTORY (CID, ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('TEST1', 'test', 5, 'leather boots', 'foot' );
+
+-- sharedinventory
+
+INSERT INTO SHAREDINVENTORY (Acc_User, slotNum, itemName, ITEMTYPE) VALUES ('test', 1, 'stone', 'raw_material' );
+INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 2, 'health potion (sm)', 'potion');
+INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 3, 'wood', 'raw_material' );
+INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 4, 'iron ore', 'raw_ore' );
+INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 5, 'leather boots', 'foot' );
+
 
 -- equipped
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST1', 'test', 'head');
@@ -325,4 +335,4 @@ INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'AN
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ANDREW1', 'andrew', 'foot');
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ANDREW1', 'andrew', 'chest');
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ANDREW1', 'andrew', 'hand');
---
+-- --
