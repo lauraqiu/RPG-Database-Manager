@@ -460,4 +460,34 @@ public class AdminViewPageDBHandler {
         }
     }
 
+    public void getAllFullyEquippedCharacters(){
+        String query = "SELECT ID, NAME" +
+                " FROM CHARACTERS C " +
+                "WHERE NOT EXISTS ((SELECT distinct E.ITEMTYPE  " +
+                "FROM EQUIPMENTS E) " +
+                "MINUS" +
+                " (SELECT EQTYPE" +
+                " FROM EQUIPPED D" +
+                " WHERE  D.cid = C.ID ))";
+
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setColumnIdentifiers(new String[]{"ID", "NAME"});
+            JTable jtable = new JTable(tableModel);
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getString("ID"),
+                        rs.getString("NAME")}
+                );
+            }
+            showResultTable(jtable);
+        } catch (SQLException e) {
+            System.out.println("ERROR");
+            throw new RuntimeException(e);
+        }
+    }
+
 }

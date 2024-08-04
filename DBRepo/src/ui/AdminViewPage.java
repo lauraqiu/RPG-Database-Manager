@@ -3,6 +3,7 @@ package ui;
 import ui_logic.AdminViewPageDBHandler;
 
 import javax.swing.*;
+import javax.swing.text.DefaultStyledDocument;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -62,27 +63,26 @@ public class AdminViewPage extends JPanel {
         JButton equippedButton = new JButton("Equipped");
         JButton serversButton = new JButton("Servers");
         JButton itemsButton = new JButton("Items");
-        JButton leaderboardsButton = new JButton("Leaderboards");
         JButton inventoriesButton = new JButton("Inventories");
         JButton equippedByCharacterButton = new JButton("Find equipment By Class");
+        JButton seeFullyEquippedButton = new JButton("SeeFullyEquippedCharacters");
 
         bottomPanel.add(accountsButton);
         bottomPanel.add(charactersButton);
         bottomPanel.add(equippedButton);
         bottomPanel.add(serversButton);
         bottomPanel.add(itemsButton);
-        bottomPanel.add(leaderboardsButton);
         bottomPanel.add(inventoriesButton);
         bottomPanel.add(equippedByCharacterButton);
-
+        bottomPanel.add(seeFullyEquippedButton);
         accountsButton.addActionListener(e -> buildAccountPage(adminViewPageDBHandler));
         charactersButton.addActionListener(e -> new CharactersPage(adminViewPageDBHandler));
         equippedButton.addActionListener(e -> new EquippedPage(adminViewPageDBHandler));
         serversButton.addActionListener(e -> {});
         itemsButton.addActionListener(e -> {});
-        leaderboardsButton.addActionListener(e -> {});
         inventoriesButton.addActionListener(e -> {});
         equippedByCharacterButton.addActionListener(e -> new EquipmentByCharacterPage(adminViewPageDBHandler));
+        seeFullyEquippedButton.addActionListener(e ->  new FullyEquippedCharacterPage(adminViewPageDBHandler));
     }
 
     // select between tables to display
@@ -242,7 +242,7 @@ public class AdminViewPage extends JPanel {
         ArrayList<String> userNameResults = adminViewPageDBHandler.getUserNames();
         JComboBox<String> updateUserEmailBox  = new JComboBox<String>();
         JComboBox<String> updateUserPasswordBox  = new JComboBox<String>();
-        JTextField updatePasswordTextField  = new JTextField(20);
+        JTextField updatePasswordTextField  = new JTextField(10);
 
         for (String userName : userNameResults) {
             usernameBox.addItem(userName);
@@ -253,13 +253,11 @@ public class AdminViewPage extends JPanel {
         JButton updatePasswordAccountButton = new JButton("Update Account Password");
         JButton updateEmailAccountButton = new JButton("Update Account Email");
         JButton deleteAccountButton = new JButton("DeleteAccount");
-
         JTextField addUserNameTextField  = new JTextField(10);
         JTextField addPasswordTextField  = new JTextField(10);
         JTextField addEmailTextField  = new JTextField(10);
 
         JTextField updateEmailTextField  = new JTextField(10);
-
         gridBagConstraints.gridy = 0;
         gridBagConstraints.gridx = 0;
         accountPageFrame.add(addAccount, gridBagConstraints);
