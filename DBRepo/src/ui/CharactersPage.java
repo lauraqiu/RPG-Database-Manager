@@ -14,8 +14,8 @@ public class CharactersPage extends JFrame {
     private JButton heightWeightButton;
     private JButton groupByButton;
     private JButton havingButton;
+    private JButton minAvgHeightButton;
     private JPanel tablePanel;
-
 
     public CharactersPage(AdminViewPageDBHandler adminViewPageDBHandler) {
         this.adminViewPageDBHandler = adminViewPageDBHandler;
@@ -52,6 +52,13 @@ public class CharactersPage extends JFrame {
         topPanel.add(havingButton, gbc);
         havingButton.addActionListener(e -> openRaceClassFrame());
 
+        minAvgHeightButton = new JButton("Class with Min Avg Height");
+        gbc.gridy = 6;
+        gbc.gridwidth = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(minAvgHeightButton, gbc);
+        minAvgHeightButton.addActionListener(e -> openMinAvgHeightFrame());
+
         add(topPanel, BorderLayout.NORTH);
 
         tablePanel = new JPanel(new BorderLayout());
@@ -73,6 +80,11 @@ public class CharactersPage extends JFrame {
     private void openRaceClassFrame() {
         CharacterRaceClassFrame queryRaceClass = new CharacterRaceClassFrame(this, adminViewPageDBHandler);
         queryRaceClass.setVisible(true);
+    }
+
+    private void openMinAvgHeightFrame() {
+        MinAvgHeightFrame minAvgHeightFrame = new MinAvgHeightFrame(this, adminViewPageDBHandler);
+        minAvgHeightFrame.setVisible(true);
     }
 
     public void displayResults(ResultSet resultSet) {

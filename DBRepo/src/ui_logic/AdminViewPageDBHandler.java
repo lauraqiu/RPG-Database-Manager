@@ -267,6 +267,13 @@ public class AdminViewPageDBHandler {
         return resultSet;
     }
 
+    public ResultSet queryMinAvgHeight() throws SQLException {
+        String query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MIN(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
+        Connection connection = dbHandler.getConnection();
+        PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+        return ps.executeQuery();
+    }
+
     // need to fix this
     public void equipItem(String equipment, String character, String username) {
         String query = "INSERT INTO EQUIPPED (eqname, cid, acc_user) VALUES (?, ?, ?)";

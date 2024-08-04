@@ -12,9 +12,9 @@ import java.sql.SQLException;
 public class CharacterRaceClassFrame extends JDialog {
     private AdminViewPageDBHandler adminViewPageDBHandler;
     private JComboBox<String> queryComboBox;
+    private JComboBox<String> attributeComboBox;
     private JButton submitButton;
     private CharactersPage parentPage;
-    private JTextField attributeField;
     private JTextField numberField;
 
     public CharacterRaceClassFrame(CharactersPage parentPage, AdminViewPageDBHandler adminViewPageDBHandler) {
@@ -48,9 +48,11 @@ public class CharacterRaceClassFrame extends JDialog {
         inputGbc.gridy = 0;
         inputPanel.add(attributeLabel, inputGbc);
 
-        attributeField = new JTextField(10);
+        attributeComboBox = new JComboBox<>(new String[] {
+                "STRENGTH", "INTELLIGENCE", "DEXTERITY", "CHARISMA", "LUCK"
+        });
         inputGbc.gridx = 1;
-        inputPanel.add(attributeField, inputGbc);
+        inputPanel.add(attributeComboBox, inputGbc);
 
         JLabel separatorLabel = new JLabel(" > ");
         inputGbc.gridx = 2;
@@ -91,7 +93,7 @@ public class CharacterRaceClassFrame extends JDialog {
         if ("Group by Race/Class with HAVING".equals(selectedQuery)) {
             try {
                 // get user input values
-                String attribute = attributeField.getText();
+                String attribute = (String) attributeComboBox.getSelectedItem();
                 String numberString = numberField.getText();
                 int number = Integer.parseInt(numberString);
 
