@@ -176,6 +176,51 @@ public class AdminViewPage extends JPanel {
         return null;
     }
 
+    private boolean validateFields(boolean validateUsername, boolean validatePassword, boolean validateEmail,  String username, String password, String email){
+        if(validateUsername && (username == null || username.isEmpty())) {
+            JOptionPane.showMessageDialog(this, "UserName is empty");
+            return false;
+        }
+        else if (validatePassword && (password == null || password.isEmpty())){
+            JOptionPane.showMessageDialog(this, "Password is empty");
+            return false;
+        }
+        else if (validateEmail && (email == null || email.isEmpty())){
+            JOptionPane.showMessageDialog(this, "Email is empty");
+            return false;
+        }
+        else if (validateEmail && !validateEmail(email)){
+            JOptionPane.showMessageDialog(this, "Email is not valid");
+            return false;
+        }
+        else if(validateUsername && userNameExists(username)){
+            JOptionPane.showMessageDialog(this, "Username already exists");
+            return false;
+        }
+        else if(validateEmail && emailExists(email)){
+            JOptionPane.showMessageDialog(this, "Email already exists");
+            return false;
+        }
+        else{
+            JOptionPane.showMessageDialog(this, "Success!");
+            return true;
+        }
+    }
+    private boolean emailExists(String email){
+        return adminViewPageDBHandler.getEmail(email);
+    }
+    private boolean userNameExists(String username){
+        return adminViewPageDBHandler.getUsername(username);
+    }
+    /* This code was taken from stackOverflow
+    * https://stackoverflow.com/questions/624581/what-is-the-best-java-email-address-validation-method
+    */
+    private boolean validateEmail(String email){
+        String ePattern = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$";
+        java.util.regex.Pattern p = java.util.regex.Pattern.compile(ePattern);
+        java.util.regex.Matcher m = p.matcher(email);
+        return m.matches();
+    }
     private void buildAccountPage(AdminViewPageDBHandler adminViewPageDBHandler) {
         JFrame accountPageFrame = new JFrame();
         accountPageFrame.setLayout(new GridBagLayout());
@@ -197,7 +242,7 @@ public class AdminViewPage extends JPanel {
         ArrayList<String> userNameResults = adminViewPageDBHandler.getUserNames();
         JComboBox<String> updateUserEmailBox  = new JComboBox<String>();
         JComboBox<String> updateUserPasswordBox  = new JComboBox<String>();
-        JTextField updatePasswordTextField  = new JTextField(10);
+        JTextField updatePasswordTextField  = new JTextField(20);
 
         for (String userName : userNameResults) {
             usernameBox.addItem(userName);
@@ -277,23 +322,37 @@ public class AdminViewPage extends JPanel {
         accountPageFrame.setSize(1020,800);
 
         addAccountButton.addActionListener(e -> {
-            adminViewPageDBHandler.addAccount(addUserNameTextField.getText(),
-                    addPasswordTextField.getText(),  addEmailTextField.getText());
-            accountPageFrame.dispose();
-            buildAccountPage(adminViewPageDBHandler);
+            String userNameTextField = addUserNameTextField.getText();
+            String passwordTextField = addPasswordTextField.getText();
+            String emailTextField = addEmailTextField.getText();
+            if (validateFields(true, true, true,
+                    userNameTextField, passwordTextField, emailTextField)){
+                adminViewPageDBHandler.addAccount(userNameTextField ,
+                        passwordTextField,  emailTextField);
+
+                accountPageFrame.dispose();
+                buildAccountPage(adminViewPageDBHandler);
+            }
+
         });
         updateEmailAccountButton.addActionListener(e -> {
-
-            adminViewPageDBHandler.updateEmailAccount(updateUserEmailBox.getSelectedItem().toString(),
-                    updateEmailTextField.getText());
+            String emailTextField = updateEmailTextField.getText();
+            if(validateFields(false, false, true, "", "", emailTextField)) {
+                adminViewPageDBHandler.updateEmailAccount(updateUserEmailBox.getSelectedItem().toString(),
+                        updateEmailTextField.getText());
+            }
         });
         updatePasswordAccountButton.addActionListener( e -> {
-            adminViewPageDBHandler.updatePasswordAccount(updateUserPasswordBox.getSelectedItem().toString(),
-                    updatePasswordTextField.getText());
+            String passwordField = updatePasswordTextField.getText();
+            if(validateFields(false, true, false, "", passwordField, "")) {
+                adminViewPageDBHandler.updatePasswordAccount((String) updateUserPasswordBox.getSelectedItem(),
+                        updatePasswordTextField.getText());
+            }
         });
         deleteAccountButton.addActionListener(e -> {
             adminViewPageDBHandler.deleteAccount(usernameBox.getSelectedItem().toString());
-            usernameBox.remove(usernameBox.getSelectedIndex());
+            usernameBox.removeItemAt(usernameBox.getSelectedIndex());
+            JOptionPane.showMessageDialog(null, "Account deleted!");
             accountPageFrame.dispose();
             buildAccountPage(adminViewPageDBHandler);
         });

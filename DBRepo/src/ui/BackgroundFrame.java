@@ -1,11 +1,6 @@
 package ui;
 
 import database.DbHandler;
-import ui_logic.AccountCreationPageDBHandler;
-import ui_logic.AccountInfoPageDBHandler;
-import ui_logic.CharacterCreationDBHandler;
-import ui_logic.CharacterViewPageDBHandler;
-import ui_logic.LoginPageDBHandler;
 import ui_logic.*;
 
 import javax.swing.*;

@@ -77,7 +77,7 @@ public class AdminViewPageDBHandler {
         frame.setSize(1020, 800);
     }
 
-    public ArrayList<String> getUserNames(){
+    public ArrayList<String> getUserNames() {
         String query = "SELECT USERNAME FROM ACCOUNTS";
 
         Connection connection = dbHandler.getConnection();
@@ -86,7 +86,7 @@ public class AdminViewPageDBHandler {
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 userNames.add(rs.getString("USERNAME"));
             }
             return userNames;
@@ -94,24 +94,26 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
-    public void deleteAccount(String userName){
+
+    public void deleteAccount(String userName) {
         String query = "DELETE FROM ACCOUNTS WHERE USERNAME = ?";
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = null;
 
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1,userName);
+            ps.setString(1, userName);
             ps.executeUpdate();
             connection.commit();
             ps.close();
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
-        }}
+        }
+    }
 
     public void addAccount(String username, String password, String email) {
-        String query = 	"INSERT INTO ACCOUNTS VALUES(?, ?, ?, ?, ?)";
+        String query = "INSERT INTO ACCOUNTS VALUES(?, ?, ?, ?, ?)";
 
         try {
             Connection connection = dbHandler.getConnection();
@@ -119,7 +121,7 @@ public class AdminViewPageDBHandler {
             ps.setString(1, username);
             ps.setInt(2, IS_VERIFIED_DEFAULT);
             ps.setString(3, password);
-            ps.setString(4,email);
+            ps.setString(4, email);
             ps.setInt(5, NUM_SLOTS_DEFAULT);
 
             ps.executeUpdate();
@@ -131,14 +133,15 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
-    public void updateEmailAccount(String username, String email ){
+
+    public void updateEmailAccount(String username, String email) {
         String query = "UPDATE ACCOUNTS SET EMAIL = ? WHERE USERNAME = ?";
 
-        try{
+        try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1,email);
-            ps.setString(2,username);
+            ps.setString(1, email);
+            ps.setString(2, username);
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -148,15 +151,16 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
-    public void updatePasswordAccount(String username, String password ){
+
+    public void updatePasswordAccount(String username, String password) {
 
         String query = "UPDATE ACCOUNTS SET PASSWORD = ? WHERE USERNAME = ?";
 
-        try{
+        try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1,password);
-            ps.setString(2,username);
+            ps.setString(1, password);
+            ps.setString(2, username);
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -167,7 +171,7 @@ public class AdminViewPageDBHandler {
         }
     }
 
-    public void getItems(){
+    public void getItems() {
         String query = "SELECT * FROM ITEMS";
 
         Connection connection = dbHandler.getConnection();
@@ -184,10 +188,10 @@ public class AdminViewPageDBHandler {
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ResultSet rs = ps.executeQuery();
-            while(rs.next()) {
+            while (rs.next()) {
                 tableModel.addRow(new Object[]{
                         rs.getString("NAME"),
-                        rs.getInt("ISKEY") == 1 ? "True":"False",
+                        rs.getInt("ISKEY") == 1 ? "True" : "False",
                         rs.getString("DESCRIPTION")}
                 );
             }
@@ -294,10 +298,10 @@ public class AdminViewPageDBHandler {
         return data;
     }
 
-    public void  getEquipmentByCharacter(String character){
+    public void getEquipmentByCharacter(String character) {
         String query = "SELECT c.ID, NAME, CLASS, EQTYPE, EQNAME " +
                 "FROM EQUIPPED e, CHARACTERS c " +
-                "WHERE c.ID = e.CID and c.CLASS = ? " ;
+                "WHERE c.ID = e.CID and c.CLASS = ? ";
 
         try {
             Connection connection = dbHandler.getConnection();
@@ -305,13 +309,13 @@ public class AdminViewPageDBHandler {
             ps.setString(1, character);
             ResultSet rs = ps.executeQuery();
             DefaultTableModel tableModel = new DefaultTableModel();
-            tableModel.setColumnIdentifiers( new String[]{"ID", "NAME", "CLASS", "EQTYPE", "EQNAME"});
+            tableModel.setColumnIdentifiers(new String[]{"ID", "NAME", "CLASS", "EQTYPE", "EQNAME"});
             JTable jtable = new JTable(tableModel);
-            while(rs.next()) {
+            while (rs.next()) {
                 tableModel.addRow(new Object[]{
                         rs.getString(1),
                         rs.getString("NAME"),
-                        rs.getString("CLASS") ,
+                        rs.getString("CLASS"),
                         rs.getString("EQTYPE"),
                         rs.getString("EQNAME")}
                 );
@@ -322,4 +326,45 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
+
+    public boolean getEmail(String email) {
+        String query = "SELECT COUNT(*) " +
+                "FROM ACCOUNTS " +
+                "WHERE EMAIL = ?";
+
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, email);
+            ResultSet rs = ps.executeQuery();
+            int result = 0;
+            while(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public boolean getUsername(String userName) {
+        String query = "SELECT COUNT(*) " +
+                "FROM ACCOUNTS " +
+                "WHERE USERNAME = ?";
+
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, userName);
+            ResultSet rs = ps.executeQuery();
+            int result = 0;
+            while(rs.next()){
+                result = rs.getInt(1);
+            }
+            return result != 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
