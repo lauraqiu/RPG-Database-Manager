@@ -201,17 +201,85 @@ public class AdminViewPageDBHandler {
         }
     }
 
-    public ResultSet queryCharacters(String condition) throws SQLException {
-        String query = "SELECT * FROM Characters WHERE " + condition;
+    public ResultSet queryHeightWeight(String heightMin, String heightMax, String weightMin, String weightMax) throws SQLException {
+        StringBuilder queryBuilder = new StringBuilder("SELECT * FROM Characters WHERE 1=1");
+
+        if (heightMin != null && !heightMin.isEmpty()) {
+            queryBuilder.append(" AND HEIGHT >= ?");
+        }
+        if (heightMax != null && !heightMax.isEmpty()) {
+            queryBuilder.append(" AND HEIGHT <= ?");
+        }
+        if (weightMin != null && !weightMin.isEmpty()) {
+            queryBuilder.append(" AND WEIGHT >= ?");
+        }
+        if (weightMax != null && !weightMax.isEmpty()) {
+            queryBuilder.append(" AND WEIGHT <= ?");
+        }
+
+        String query = queryBuilder.toString();
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+        // set placeholders
+        int index = 1;
+        if (heightMin != null && !heightMin.isEmpty()) {
+            ps.setString(index++, heightMin);
+        }
+        if (heightMax != null && !heightMax.isEmpty()) {
+            ps.setString(index++, heightMax);
+        }
+        if (weightMin != null && !weightMin.isEmpty()) {
+            ps.setString(index++, weightMin);
+        }
+        if (weightMax != null && !weightMax.isEmpty()) {
+            ps.setString(index++, weightMax);
+        }
+
         return ps.executeQuery();
     }
 
-    public ResultSet aggregationQuery(String query) throws SQLException {
+    public ResultSet queryRaceAge(String condition, Object[] params) throws SQLException {
+        String query = "SELECT RACE, AVG(age) FROM CHARACTERS WHERE " + condition + " GROUP BY RACE";
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+        for (int i = 0; i < params.length; i++) {
+            ps.setObject(i + 1, params[i]);
+        }
         return ps.executeQuery();
+    }
+
+    public ResultSet queryRaceClass(String attribute, int number) throws SQLException {
+        // check if attribute input is valid
+        String attributeUpperCase = attribute.toUpperCase();
+        String[] validAttributes = {"STRENGTH", "INTELLIGENCE", "DEXTERITY", "CHARISMA", "LUCK"};
+
+        boolean isValid = false;
+        for (String validAttribute : validAttributes) {
+            if (validAttribute.equals(attributeUpperCase)) {
+                isValid = true;
+                break;
+            }
+        }
+
+        if (!isValid) {
+            throw new IllegalArgumentException("Invalid attribute: " + attribute);
+        }
+
+        String query = "SELECT RACE, CLASS, AVG(LVL), AVG(STRENGTH), AVG(INTELLIGENCE), AVG(DEXTERITY), AVG(CHARISMA), AVG(LUCK) "
+                + "FROM CHARACTERS "
+                + "GROUP BY RACE, CLASS "
+                + "HAVING AVG(" + attributeUpperCase + ") > ?";
+
+        Connection connection = dbHandler.getConnection();
+        PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+
+        ps.setInt(1, number);
+
+        ResultSet resultSet = ps.executeQuery();
+
+        return resultSet;
     }
 
     // need to fix this
@@ -240,10 +308,14 @@ public class AdminViewPageDBHandler {
     public void showFullTable(String tableName) {
         String query = "SELECT * FROM " + tableName;
 
+        Connection connection = null;
+        PrintablePreparedStatement ps = null;
+        ResultSet rs = null;
+
         try {
-            Connection connection = dbHandler.getConnection();
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
+            connection = dbHandler.getConnection();
+            ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            rs = ps.executeQuery();
 
             ResultSetMetaData metaData = rs.getMetaData();
             int columnCount = metaData.getColumnCount();
@@ -266,11 +338,32 @@ public class AdminViewPageDBHandler {
 
             showResultTable(table);
 
-            ps.close();
-            connection.commit();
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to fetch data from table " + tableName);
             e.printStackTrace();
+        } finally {
+            // Close resources in the finally block
+            if (rs != null) {
+                try {
+                    rs.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 
