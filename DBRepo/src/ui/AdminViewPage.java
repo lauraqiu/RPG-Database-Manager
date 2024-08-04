@@ -64,6 +64,7 @@ public class AdminViewPage extends JPanel {
         JButton itemsButton = new JButton("Items");
         JButton leaderboardsButton = new JButton("Leaderboards");
         JButton inventoriesButton = new JButton("Inventories");
+        JButton equippedByCharacterButton = new JButton("Find equipment By Class");
 
         bottomPanel.add(accountsButton);
         bottomPanel.add(charactersButton);
@@ -72,7 +73,7 @@ public class AdminViewPage extends JPanel {
         bottomPanel.add(itemsButton);
         bottomPanel.add(leaderboardsButton);
         bottomPanel.add(inventoriesButton);
-
+        bottomPanel.add(equippedByCharacterButton);
 
         accountsButton.addActionListener(e -> buildAccountPage(adminViewPageDBHandler));
         charactersButton.addActionListener(e -> new CharactersPage(adminViewPageDBHandler));
@@ -81,6 +82,7 @@ public class AdminViewPage extends JPanel {
         itemsButton.addActionListener(e -> {});
         leaderboardsButton.addActionListener(e -> {});
         inventoriesButton.addActionListener(e -> {});
+        equippedByCharacterButton.addActionListener(e -> new EquipmentByCharacterPage(adminViewPageDBHandler));
     }
 
     // select between tables to display

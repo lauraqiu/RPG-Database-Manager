@@ -5,6 +5,7 @@ import utilities.PrintablePreparedStatement;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -291,5 +292,34 @@ public class AdminViewPageDBHandler {
             e.printStackTrace();
         }
         return data;
+    }
+
+    public void  getEquipmentByCharacter(String character){
+        String query = "SELECT c.ID, NAME, CLASS, EQTYPE, EQNAME " +
+                "FROM EQUIPPED e, CHARACTERS c " +
+                "WHERE c.ID = e.CID and c.CLASS = ? " ;
+
+        try {
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, character);
+            ResultSet rs = ps.executeQuery();
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setColumnIdentifiers( new String[]{"ID", "NAME", "CLASS", "EQTYPE", "EQNAME"});
+            JTable jtable = new JTable(tableModel);
+            while(rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getString(1),
+                        rs.getString("NAME"),
+                        rs.getString("CLASS") ,
+                        rs.getString("EQTYPE"),
+                        rs.getString("EQNAME")}
+                );
+            }
+            showResultTable(jtable);
+        } catch (SQLException e) {
+            System.out.println("ERROR");
+            throw new RuntimeException(e);
+        }
     }
 }
