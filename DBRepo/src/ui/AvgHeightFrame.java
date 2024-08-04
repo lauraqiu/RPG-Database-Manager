@@ -1,7 +1,6 @@
 package ui;
 
 import ui_logic.AdminViewPageDBHandler;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -9,14 +8,14 @@ import java.awt.event.ActionListener;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class MinAvgHeightFrame extends JDialog {
+public class AvgHeightFrame extends JDialog {
     private AdminViewPageDBHandler adminViewPageDBHandler;
-    private JComboBox<String> filterComboBox;
+    private JComboBox<String> optionComboBox;
     private JButton submitButton;
     private CharactersPage parentPage;
 
-    public MinAvgHeightFrame(CharactersPage parentPage, AdminViewPageDBHandler adminViewPageDBHandler) {
-        super(parentPage, "Find Class with Minimum Average Height", true);
+    public AvgHeightFrame (CharactersPage parentPage, AdminViewPageDBHandler adminViewPageDBHandler) {
+        super(parentPage, "Find Class", true);
         this.adminViewPageDBHandler = adminViewPageDBHandler;
         this.parentPage = parentPage;
 
@@ -25,17 +24,17 @@ public class MinAvgHeightFrame extends JDialog {
         gbc.insets = new Insets(10, 10, 10, 10);
         gbc.anchor = GridBagConstraints.WEST;
 
-        JLabel filterLabel = new JLabel("Select query:");
+        JLabel promptLabel = new JLabel("Find class with:");
         gbc.gridx = 0;
         gbc.gridy = 0;
-        add(filterLabel, gbc);
+        add(promptLabel, gbc);
 
-        filterComboBox = new JComboBox<>(new String[] {
-                "--Select Query--",
-                "Find Class with Minimum Average Height"
+        optionComboBox = new JComboBox<>(new String[] {
+                "Max Height",
+                "Min Height"
         });
         gbc.gridx = 1;
-        add(filterComboBox, gbc);
+        add(optionComboBox, gbc);
 
         submitButton = new JButton("Submit");
         gbc.gridy = 1;
@@ -54,10 +53,11 @@ public class MinAvgHeightFrame extends JDialog {
     }
 
     private void handleSubmit() {
-        String selectedQuery = (String) filterComboBox.getSelectedItem();
-        if (selectedQuery != null && selectedQuery.equals("Find Class with Minimum Average Height")) {
+        String selectedOption = (String) optionComboBox.getSelectedItem();
+
+        if (selectedOption != null) {
             try {
-                ResultSet resultSet = adminViewPageDBHandler.queryMinAvgHeight();
+                ResultSet resultSet = adminViewPageDBHandler.queryAvgHeight(selectedOption);
                 parentPage.displayResults(resultSet);
             } catch (SQLException ex) {
                 ex.printStackTrace();
@@ -65,7 +65,7 @@ public class MinAvgHeightFrame extends JDialog {
             }
             dispose();
         } else {
-            JOptionPane.showMessageDialog(this, "Please select a valid query.");
+            JOptionPane.showMessageDialog(this, "Please select a valid option.");
         }
     }
 }

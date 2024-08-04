@@ -90,7 +90,6 @@ public class CharacterHeightWeightFrame extends JDialog {
                     maxWeight.isEmpty() ? null : maxWeight
             );
             ((CharactersPage) getOwner()).displayResults(resultSet);
-            JOptionPane.showMessageDialog(this, "Query successful!");
             dispose();
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(this, "Error querying characters: " + ex.getMessage());

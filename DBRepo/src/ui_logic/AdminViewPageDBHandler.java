@@ -267,8 +267,16 @@ public class AdminViewPageDBHandler {
         return resultSet;
     }
 
-    public ResultSet queryMinAvgHeight() throws SQLException {
-        String query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MIN(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
+    public ResultSet queryAvgHeight(String option) throws SQLException {
+        String query;
+        if ("Max Height".equals(option)) {
+            query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MAX(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
+        } else if ("Min Height".equals(option)) {
+            query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MIN(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
+        } else {
+            throw new IllegalArgumentException("Invalid option: " + option);
+        }
+
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
         return ps.executeQuery();
