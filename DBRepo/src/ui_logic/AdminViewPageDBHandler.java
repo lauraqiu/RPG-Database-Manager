@@ -251,26 +251,11 @@ public class AdminViewPageDBHandler {
     }
 
     public ResultSet queryRaceClass(String attribute, int number) throws SQLException {
-        // check if attribute input is valid
-        String attributeUpperCase = attribute.toUpperCase();
-        String[] validAttributes = {"STRENGTH", "INTELLIGENCE", "DEXTERITY", "CHARISMA", "LUCK"};
-
-        boolean isValid = false;
-        for (String validAttribute : validAttributes) {
-            if (validAttribute.equals(attributeUpperCase)) {
-                isValid = true;
-                break;
-            }
-        }
-
-        if (!isValid) {
-            throw new IllegalArgumentException("Invalid attribute: " + attribute);
-        }
 
         String query = "SELECT RACE, CLASS, AVG(LVL), AVG(STRENGTH), AVG(INTELLIGENCE), AVG(DEXTERITY), AVG(CHARISMA), AVG(LUCK) "
                 + "FROM CHARACTERS "
                 + "GROUP BY RACE, CLASS "
-                + "HAVING AVG(" + attributeUpperCase + ") > ?";
+                + "HAVING AVG(" + attribute + ") > ?";
 
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
