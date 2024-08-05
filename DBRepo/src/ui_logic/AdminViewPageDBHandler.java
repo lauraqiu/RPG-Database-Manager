@@ -517,5 +517,35 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
+    public void addCharacter(String characterIDString, String accUserString, String nameString, String classString, int age,
+            int height, int weight, String raceString, int level, int money, int strength, int intelligence, int charisma,
+            int dexterity, int luck, int invSlots, String serverNameString) throws SQLException{
 
+        String query = "INSERT INTO CHARACTERS VALUES(?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? " +
+                ", ? ,? ,? ,? ,? )";
+
+            Connection connection = dbHandler.getConnection();
+            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ps.setString(1, characterIDString);
+            ps.setString(2, accUserString);
+            ps.setString(3, nameString);
+            ps.setString(4, classString);
+            ps.setInt(5, age);
+            ps.setInt(6, height);
+            ps.setInt(7, weight);
+            ps.setString(8, raceString);
+            ps.setInt(9, level);
+            ps.setInt(10, money);
+            ps.setInt(11, strength);
+            ps.setInt(12, intelligence);
+            ps.setInt(13, charisma);
+            ps.setInt(14, dexterity);
+            ps.setInt(15, luck);
+            ps.setInt(16, invSlots);
+            ps.setString(17, serverNameString);
+
+            ps.executeUpdate();
+            connection.commit();
+            ps.close();
+    }
 }
