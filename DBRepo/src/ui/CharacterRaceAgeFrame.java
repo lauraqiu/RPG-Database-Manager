@@ -62,11 +62,11 @@ public class CharacterRaceAgeFrame extends JDialog {
 
                 ResultSet resultSet = adminViewPageDBHandler.queryRaceAge(condition, params);
                 parentPage.displayResults(resultSet);
+                JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error executing query: " + ex.getMessage());
             }
-            JOptionPane.showMessageDialog(this, "Success!");
             dispose();
         }
     }

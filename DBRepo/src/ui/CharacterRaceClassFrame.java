@@ -100,13 +100,13 @@ public class CharacterRaceClassFrame extends JDialog {
                 // execute query
                 ResultSet resultSet = adminViewPageDBHandler.queryRaceClass(attribute, number);
                 parentPage.displayResults(resultSet);
+                JOptionPane.showMessageDialog(this, "Success!");
             } catch (NumberFormatException ex) {
                 JOptionPane.showMessageDialog(this, "Invalid number format: " + ex.getMessage());
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error executing query: " + ex.getMessage());
             }
-            JOptionPane.showMessageDialog(this, "Success!");
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Please select a valid query.");
