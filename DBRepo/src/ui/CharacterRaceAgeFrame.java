@@ -1,6 +1,7 @@
 package ui;
 
 import ui_logic.AdminViewPageDBHandler;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -29,9 +30,9 @@ public class CharacterRaceAgeFrame extends JDialog {
         gbc.gridy = 0;
         add(filterLabel, gbc);
 
-        filterComboBox = new JComboBox<>(new String[] {
+        filterComboBox = new JComboBox<>(new String[]{
                 "--Select Aggregation--",
-                "Group by Race and Average Age"
+                "Find Average Age for Every Race"
         });
         gbc.gridx = 1;
         add(filterComboBox, gbc);

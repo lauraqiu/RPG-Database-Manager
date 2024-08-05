@@ -3,7 +3,6 @@ package ui;
 import ui_logic.AdminViewPageDBHandler;
 
 import javax.swing.*;
-import javax.swing.text.DefaultStyledDocument;
 import java.awt.*;
 import java.util.ArrayList;
 
@@ -22,22 +21,13 @@ public class AdminViewPage extends JPanel {
         gridBagConstraints = new GridBagConstraints();
 
         JLabel attribute = new JLabel("Select Table:");
+        JComboBox<String> tableBox = new JComboBox<>();
         // add dropdown option for each table
-        JComboBox<String> tableBox = new JComboBox<>(new String[]{
-                "ACCOUNTS",
-                "FRIENDS",
-                "SERVERS",
-                "CHARACTERS",
-                "GLOBALLEADERBOARD",
-                "LOCALLEADERBOARD",
-                "ITEMS",
-                "CONSUMABLES",
-                "EQUIPMENTS",
-                "RESOURCES",
-                "EQUIPPED",
-                "INVENTORY",
-                "SHAREDINVENTORY"
-        });
+        // dynamically get table names from database schema
+        ArrayList<String> tableNames = adminViewPageDBHandler.getTableNames();
+        for (String tableName : tableNames) {
+            tableBox.addItem(tableName);
+        }
         JButton searchButton = new JButton("Search");
 
         gridBagConstraints.gridx = 0;
@@ -85,34 +75,14 @@ public class AdminViewPage extends JPanel {
         seeFullyEquippedButton.addActionListener(e ->  new FullyEquippedCharacterPage(adminViewPageDBHandler));
     }
 
-    // select between tables to display
+    // get attributes to display
     private void showAttributesFrame(String selectedTable) {
-        if ("ACCOUNTS".equals(selectedTable)) {
-            showFrame("ACCOUNTS", new String[]{"username", "isVerified", "password", "email", "InvSlots"});
-        } else if ("FRIENDS".equals(selectedTable)) {
-            showFrame("FRIENDS", new String[]{"username", "friend"});
-        } else if ("SERVERS".equals(selectedTable)) {
-            showFrame("SERVERS", new String[]{"name", "location", "capacity"});
-        } else if ("CHARACTERS".equals(selectedTable)) {
-            showFrame("CHARACTERS", new String[]{"ID", "Acc_User", "name", "class", "age", "height", "weight", "race", "lvl", "money", "strength", "intelligence", "charisma", "dexterity", "luck", "InvSlots", "serverName", "serverLocation"});
-        } else if ("GLOBALLEADERBOARD".equals(selectedTable)) {
-            showFrame("GLOBALLEADERBOARD", new String[]{"id", "Fame", "CID", "Acc_User"});
-        } else if ("LOCALLEADERBOARD".equals(selectedTable)) {
-            showFrame("LOCALLEADERBOARD", new String[]{"id", "Fame", "CID", "Acc_User", "serverLocation", "serverName"});
-        } else if ("ITEMS".equals(selectedTable)) {
-            showFrame("ITEMS", new String[]{"name", "isKey", "description"});
-        } else if ("CONSUMABLES".equals(selectedTable)) {
-            showFrame("CONSUMABLES", new String[]{"itemName", "maxStack"});
-        } else if ("EQUIPMENTS".equals(selectedTable)) {
-            showFrame("EQUIPMENTS", new String[]{"itemName", "type", "strength", "intelligence", "charisma", "dexterity", "luck"});
-        } else if ("RESOURCES".equals(selectedTable)) {
-            showFrame("RESOURCES", new String[]{"itemName", "maxStack"});
-        } else if ("EQUIPPED".equals(selectedTable)) {
-            showFrame("EQUIPPED", new String[]{"EqName", "CID", "Acc_User", "EqType"});
-        } else if ("INVENTORY".equals(selectedTable)) {
-            showFrame("INVENTORY", new String[]{"CID", "Acc_User", "slotNum", "stacks", "itemName"});
-        } else if ("SHAREDINVENTORY".equals(selectedTable)) {
-            showFrame("SHAREDINVENTORY", new String[]{"userID", "slotNum", "stacks", "item"});
+        String[] attributes = adminViewPageDBHandler.getTableAttributes(selectedTable);
+
+        if (attributes != null && attributes.length > 0) {
+            showFrame(selectedTable, attributes);
+        } else {
+            JOptionPane.showMessageDialog(null, "No attributes found for table: " + selectedTable, "ERROR", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -165,7 +135,6 @@ public class AdminViewPage extends JPanel {
                 anySelected = true;
             }
         }
-
         // remove space and comma
         if (anySelected) {
             query.setLength(query.length() - 2);

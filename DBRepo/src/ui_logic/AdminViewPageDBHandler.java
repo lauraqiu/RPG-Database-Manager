@@ -2,17 +2,12 @@ package ui_logic;
 
 import database.DbHandler;
 import utilities.PrintablePreparedStatement;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
-import javax.swing.table.TableModel;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
-import java.sql.ResultSetMetaData;
 
 
 import static ui_logic.DBHandlerConstants.IS_VERIFIED_DEFAULT;
@@ -23,6 +18,39 @@ public class AdminViewPageDBHandler {
 
     public AdminViewPageDBHandler(DbHandler dbHandler) {
         this.dbHandler = dbHandler;
+    }
+
+    public ArrayList<String> getTableNames() {
+        ArrayList<String> tableNames = new ArrayList<>();
+        try {
+            DatabaseMetaData metaData = dbHandler.getConnection().getMetaData();
+            String currentSchema = metaData.getUserName();
+
+            ResultSet tables = metaData.getTables(null, currentSchema, "%", new String[]{"TABLE"});
+            while (tables.next()) {
+                String tableName = tables.getString("TABLE_NAME");
+                tableNames.add(tableName);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return tableNames;
+    }
+
+    public String[] getTableAttributes(String tableName) {
+        ArrayList<String> attributes = new ArrayList<>();
+        try {
+            DatabaseMetaData metaData = dbHandler.getConnection().getMetaData();
+            String currentSchema = metaData.getUserName();
+            ResultSet columns = metaData.getColumns(null, currentSchema, tableName, null);
+            while (columns.next()) {
+                attributes.add(columns.getString("COLUMN_NAME"));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return attributes.toArray(new String[0]);
     }
 
     public void retrieveData(String query, JCheckBox[] checkBoxes) {

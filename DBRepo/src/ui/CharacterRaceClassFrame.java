@@ -34,7 +34,7 @@ public class CharacterRaceClassFrame extends JDialog {
 
         queryComboBox = new JComboBox<>(new String[] {
                 "--Select Query--",
-                "Group by Race/Class with HAVING"
+                "Average Stats"
         });
         gbc.gridx = 1;
         add(queryComboBox, gbc);
