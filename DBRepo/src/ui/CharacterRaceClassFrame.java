@@ -90,7 +90,7 @@ public class CharacterRaceClassFrame extends JDialog {
 
     private void handleSubmit() {
         String selectedQuery = (String) queryComboBox.getSelectedItem();
-        if ("Group by Race/Class with HAVING".equals(selectedQuery)) {
+        if ("Average Stats".equals(selectedQuery)) {
             try {
                 // get user input values
                 String attribute = (String) attributeComboBox.getSelectedItem();
@@ -106,6 +106,7 @@ public class CharacterRaceClassFrame extends JDialog {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error executing query: " + ex.getMessage());
             }
+            JOptionPane.showMessageDialog(this, "Success!");
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Please select a valid query.");
