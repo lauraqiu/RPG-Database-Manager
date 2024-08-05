@@ -336,13 +336,13 @@ INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'A
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ANDREW1', 'andrew', 'chest');
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ANDREW1', 'andrew', 'hand');
 
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST2', 'test', 'head');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'TEST2', 'test', 'foot');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'TEST2', 'test', 'chest');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'TEST2', 'test', 'hand');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN1' ,'admin', 'foot');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'ADMIN1', 'admin', 'head');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN2', 'admin', 'foot');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ADMIN2', 'admin', 'chest');
--- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ANDREW1', 'admin', 'hand');
--- -- -- --
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST2', 'test', 'head');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'TEST2', 'test', 'foot');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'TEST2', 'test', 'chest');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'TEST2', 'test', 'hand');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN1' ,'admin', 'foot');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'ADMIN1', 'admin', 'head');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN2', 'admin', 'foot');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ADMIN2', 'admin', 'chest');
+INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ADMIN2', 'admin', 'hand');
+-- --
