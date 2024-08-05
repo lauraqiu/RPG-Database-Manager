@@ -222,6 +222,8 @@ public class AdminViewPage extends JPanel {
         JButton updatePasswordAccountButton = new JButton("Update Account Password");
         JButton updateEmailAccountButton = new JButton("Update Account Email");
         JButton deleteAccountButton = new JButton("DeleteAccount");
+        JButton getAccountsButton = new JButton("Retrieve Accounts");
+
         JTextField addUserNameTextField  = new JTextField(10);
         JTextField addPasswordTextField  = new JTextField(10);
         JTextField addEmailTextField  = new JTextField(10);
@@ -281,10 +283,10 @@ public class AdminViewPage extends JPanel {
         accountPageFrame.add(usernameBox, gridBagConstraints);
         gridBagConstraints.gridx = 1;
         accountPageFrame.add(deleteAccountButton, gridBagConstraints);
-        gridBagConstraints.gridx = 2;
 
-        gridBagConstraints.gridy = 7;
-
+        gridBagConstraints.gridy = 8;
+        gridBagConstraints.gridx = 0;
+        accountPageFrame.add(getAccountsButton, gridBagConstraints);
         accountPageFrame.setVisible(true);
         accountPageFrame.setSize(1020,800);
 
@@ -322,6 +324,10 @@ public class AdminViewPage extends JPanel {
             JOptionPane.showMessageDialog(null, "Account deleted!");
             accountPageFrame.dispose();
             buildAccountPage(adminViewPageDBHandler);
+        });
+
+        getAccountsButton.addActionListener( e -> {
+            adminViewPageDBHandler.retrieveAccounts();
         });
     }
 }

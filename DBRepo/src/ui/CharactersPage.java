@@ -16,6 +16,7 @@ public class CharactersPage extends JFrame {
     private JButton havingButton;
     private JButton AvgHeightButton;
     private JButton CreateCharacterButton;
+    private JButton GetCharacterButton;
     private JPanel tablePanel;
 
     public CharactersPage(AdminViewPageDBHandler adminViewPageDBHandler) {
@@ -68,6 +69,14 @@ public class CharactersPage extends JFrame {
         CreateCharacterButton.addActionListener(e -> createCharacterFrame());
         add(topPanel, BorderLayout.NORTH);
 
+        GetCharacterButton = new JButton("Get Characters");
+        gbc.gridy = 8;
+        gbc.gridwidth = 4;
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        topPanel.add(GetCharacterButton, gbc);
+        GetCharacterButton.addActionListener(e -> getCharacterFrame());
+        add(topPanel, BorderLayout.NORTH);
+
         tablePanel = new JPanel(new BorderLayout());
         add(tablePanel, BorderLayout.CENTER);
 
@@ -93,7 +102,10 @@ public class CharactersPage extends JFrame {
         AvgHeightFrame AvgHeightFrame = new AvgHeightFrame(this, adminViewPageDBHandler);
         AvgHeightFrame.setVisible(true);
     }
+    private void getCharacterFrame(){
 
+        adminViewPageDBHandler.showFullTable("CHARACTERS");
+    }
     private void createCharacterFrame() {
         JFrame createCharacterFrame = new JFrame("Create Character");
         createCharacterFrame.setSize(1000, 1020);

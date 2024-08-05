@@ -104,6 +104,21 @@ public class AdminViewPageDBHandler {
         frame.setSize(1020, 800);
     }
 
+    private void showResultTableBig(JTable table) {
+        JPanel panel = new JPanel(new BorderLayout());
+        panel.setPreferredSize(new Dimension(1500, 800));
+        JScrollPane scrollPane = new JScrollPane(table);
+        JFrame frame = new JFrame();
+        panel.add(scrollPane, BorderLayout.CENTER);
+        frame.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        frame.add(panel, gbc);
+        frame.setVisible(true);
+        frame.setSize(2000, 2000);
+    }
+
     public ArrayList<String> getUserNames() {
         String query = "SELECT USERNAME FROM ACCOUNTS";
 
@@ -144,10 +159,10 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, sanitizeInput(username));
+            ps.setString(1, username);
             ps.setInt(2, IS_VERIFIED_DEFAULT);
-            ps.setString(3, sanitizeInput(password));
-            ps.setString(4, sanitizeInput(email));
+            ps.setString(3, password);
+            ps.setString(4, email);
             ps.setInt(5, NUM_SLOTS_DEFAULT);
 
             ps.executeUpdate();
@@ -165,8 +180,8 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, sanitizeInput(email));
-            ps.setString(2, sanitizeInput(username));
+            ps.setString(1, email);
+            ps.setString(2, username);
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -182,8 +197,8 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, sanitizeInput(password));
-            ps.setString(2, sanitizeInput(username));
+            ps.setString(1, password);
+            ps.setString(2, username);
             ps.executeUpdate();
             connection.commit();
             ps.close();
@@ -344,7 +359,6 @@ public class AdminViewPageDBHandler {
 
             DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0);
             JTable table = new JTable(tableModel);
-
             while (rs.next()) {
                 Vector<Object> rowData = new Vector<>();
                 for (int i = 1; i <= columnCount; i++) {
@@ -353,7 +367,7 @@ public class AdminViewPageDBHandler {
                 tableModel.addRow(rowData);
             }
 
-            showResultTable(table);
+            showResultTableBig(table);
 
         } catch (SQLException e) {
             System.out.println("ERROR: Unable to fetch data from table " + tableName);
@@ -505,6 +519,9 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
+    public void getCharacter(){
+
+    }
     public void addCharacter(String characterIDString, String accUserString, String nameString, String classString, int age,
             int height, int weight, String raceString, int level, int money, int strength, int intelligence, int charisma,
             int dexterity, int luck, int invSlots, String serverNameString) throws SQLException{
@@ -535,10 +552,40 @@ public class AdminViewPageDBHandler {
             connection.commit();
             ps.close();
     }
+
+    public void retrieveAccounts()
+    {
+        Connection connection = dbHandler.getConnection();
+        String query = "SELECT * FROM ACCOUNTS";
+        PrintablePreparedStatement ps = null;
+        try {
+            ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
+            ResultSet rs = ps.executeQuery();
+            DefaultTableModel tableModel = new DefaultTableModel();
+            tableModel.setColumnIdentifiers(new String[]{"USERNAME", "ISVERIFIED", "PASSWORD", "EMAIL","INVSLOTS"});
+            JTable jtable = new JTable(tableModel);
+
+            while (rs.next()) {
+                tableModel.addRow(new Object[]{
+                        rs.getString("USERNAME"),
+                        rs.getInt("ISVERIFIED"),
+                        rs.getString("PASSWORD"),
+                        rs.getString("EMAIL"),
+                        rs.getInt("INVSLOTS")}
+                );
+            }
+
+            showResultTable(jtable);
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     private String sanitizeInput(String input) {
         if (input == null) {
             return null;
         }
         return input.replaceAll("[^a-zA-Z0-9_\\s]", "").trim();
     }
+
 }
