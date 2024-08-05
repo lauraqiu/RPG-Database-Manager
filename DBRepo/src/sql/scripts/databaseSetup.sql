@@ -61,13 +61,13 @@ CREATE TABLE Characters
 --
 CREATE TABLE LeaderboardParticipation
 (
-    CID         VARCHAR(20),
-    Acc_User    VARCHAR(20),
-    boardLoc    VARCHAR(20),
+    CID         VARCHAR(20) ,
+    Acc_User    VARCHAR(20) NOT NULL,
+    boardLoc    VARCHAR(20) ,
     fame        INT,
     PRIMARY KEY (CID, boardLoc),
-    FOREIGN KEY (boardLoc) REFERENCES Leaderboards(location),
-    FOREIGN KEY (CID, Acc_User) REFERENCES Characters (ID, Acc_User)
+    FOREIGN KEY (boardLoc) REFERENCES Leaderboards(location) ON DELETE CASCADE ,
+    FOREIGN KEY (CID, Acc_User) REFERENCES Characters (ID, Acc_User) ON DELETE CASCADE
 );
 
 CREATE TABLE Items
@@ -112,11 +112,11 @@ CREATE TABLE Resources
 
 CREATE TABLE Equipped
 (
-    EqName  VARCHAR(20),
-    CID     VARCHAR(20),
-    Acc_User VARCHAR(20),
-    EqType  VARCHAR(20),
-    PRIMARY KEY (EqName, CID, Acc_User),
+    EqName  VARCHAR(20) ,
+    CID     VARCHAR(20) ,
+    Acc_User VARCHAR(20) ,
+    EqType  VARCHAR(20) ,
+    PRIMARY KEY (EqName, EqType, CID, Acc_User),
     FOREIGN KEY (CID, Acc_User) REFERENCES Characters (ID, Acc_User) ON DELETE CASCADE,
     FOREIGN KEY (EqName, EqType) REFERENCES Equipments (itemName, itemType) ON DELETE CASCADE,
     UNIQUE (CID, EqType)
@@ -150,7 +150,7 @@ CREATE TABLE SharedInventory
 );
 -- inserts
 --
--- --
+--
 -- Accounts
 INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('admin', 1, 'admin', '123@fake.com', 150);
 INSERT INTO ACCOUNTS (username, isVerified, password, email, InvSlots) VALUES ('test', 1, 'test','11@fake.ca', 150);
@@ -323,7 +323,7 @@ INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('tes
 INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 3, 'wood', 'raw_material' );
 INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 4, 'iron ore', 'raw_ore' );
 INSERT INTO SHAREDINVENTORY (ACC_USER, SLOTNUM, ITEMNAME, ITEMTYPE) VALUES ('test', 5, 'leather boots', 'foot' );
-
+--
 
 -- equipped
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST1', 'test', 'head');
@@ -335,4 +335,14 @@ INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'AN
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ANDREW1', 'andrew', 'foot');
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ANDREW1', 'andrew', 'chest');
 INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ANDREW1', 'andrew', 'hand');
--- --
+
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'TEST2', 'test', 'head');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'TEST2', 'test', 'foot');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'TEST2', 'test', 'chest');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'TEST2', 'test', 'hand');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN1' ,'admin', 'foot');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('basic helmet', 'ADMIN1', 'admin', 'head');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather boots', 'ADMIN2', 'admin', 'foot');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather tunic', 'ADMIN2', 'admin', 'chest');
+-- -- INSERT INTO EQUIPPED (EQNAME, CID, ACC_USER, EQTYPE) VALUES ('leather gloves', 'ANDREW1', 'admin', 'hand');
+-- -- -- --
