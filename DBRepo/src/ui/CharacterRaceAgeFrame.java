@@ -55,17 +55,18 @@ public class CharacterRaceAgeFrame extends JDialog {
 
     private void handleSubmit() {
         String selectedFilter = (String) filterComboBox.getSelectedItem();
-        if (selectedFilter != null && selectedFilter.equals("Group by Race and Average Age")) {
+        if (selectedFilter != null && selectedFilter.equals("Find Average Age for Every Race")) {
             try {
                 String condition = "1=1"; // default
                 Object[] params = {};
 
                 ResultSet resultSet = adminViewPageDBHandler.queryRaceAge(condition, params);
-                parentPage.displayResults(resultSet); // Call on the instance
+                parentPage.displayResults(resultSet);
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error executing query: " + ex.getMessage());
             }
+            JOptionPane.showMessageDialog(this, "Success!");
             dispose();
         }
     }

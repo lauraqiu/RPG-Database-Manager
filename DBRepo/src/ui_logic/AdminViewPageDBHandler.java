@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Vector;
 
-
 import static ui_logic.DBHandlerConstants.IS_VERIFIED_DEFAULT;
 import static ui_logic.DBHandlerConstants.NUM_SLOTS_DEFAULT;
 
@@ -66,7 +65,7 @@ public class AdminViewPageDBHandler {
             for (JCheckBox checkBox : checkBoxes) {
                 // get column names of selected checkboxes
                 if (checkBox.isSelected()) {
-                    columnNames.add(checkBox.getText().toUpperCase().replace(" ", "_"));
+                    columnNames.add(sanitizeInput(checkBox.getText().toUpperCase().replace(" ", "_")));
                 }
             }
             tableModel.setColumnIdentifiers(columnNames);
@@ -130,11 +129,10 @@ public class AdminViewPageDBHandler {
 
         try {
             ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, userName);
+            ps.setString(1, sanitizeInput(userName));
             ps.executeUpdate();
             connection.commit();
             ps.close();
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -146,16 +144,15 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, username);
+            ps.setString(1, sanitizeInput(username));
             ps.setInt(2, IS_VERIFIED_DEFAULT);
-            ps.setString(3, password);
-            ps.setString(4, email);
+            ps.setString(3, sanitizeInput(password));
+            ps.setString(4, sanitizeInput(email));
             ps.setInt(5, NUM_SLOTS_DEFAULT);
 
             ps.executeUpdate();
             connection.commit();
             ps.close();
-
         } catch (SQLException e) {
             System.out.println("ERROR");
             throw new RuntimeException(e);
@@ -168,12 +165,11 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, email);
-            ps.setString(2, username);
+            ps.setString(1, sanitizeInput(email));
+            ps.setString(2, sanitizeInput(username));
             ps.executeUpdate();
             connection.commit();
             ps.close();
-
         } catch (SQLException e) {
             System.out.println("ERROR");
             throw new RuntimeException(e);
@@ -181,18 +177,16 @@ public class AdminViewPageDBHandler {
     }
 
     public void updatePasswordAccount(String username, String password) {
-
         String query = "UPDATE ACCOUNTS SET PASSWORD = ? WHERE USERNAME = ?";
 
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, password);
-            ps.setString(2, username);
+            ps.setString(1, sanitizeInput(password));
+            ps.setString(2, sanitizeInput(username));
             ps.executeUpdate();
             connection.commit();
             ps.close();
-
         } catch (SQLException e) {
             System.out.println("ERROR");
             throw new RuntimeException(e);
@@ -223,7 +217,6 @@ public class AdminViewPageDBHandler {
                         rs.getString("DESCRIPTION")}
                 );
             }
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
@@ -252,16 +245,16 @@ public class AdminViewPageDBHandler {
         // set placeholders
         int index = 1;
         if (heightMin != null && !heightMin.isEmpty()) {
-            ps.setString(index++, heightMin);
+            ps.setString(index++, sanitizeInput(heightMin));
         }
         if (heightMax != null && !heightMax.isEmpty()) {
-            ps.setString(index++, heightMax);
+            ps.setString(index++, sanitizeInput(heightMax));
         }
         if (weightMin != null && !weightMin.isEmpty()) {
-            ps.setString(index++, weightMin);
+            ps.setString(index++, sanitizeInput(weightMin));
         }
         if (weightMax != null && !weightMax.isEmpty()) {
-            ps.setString(index++, weightMax);
+            ps.setString(index++, sanitizeInput(weightMax));
         }
 
         return ps.executeQuery();
@@ -279,19 +272,16 @@ public class AdminViewPageDBHandler {
     }
 
     public ResultSet queryRaceClass(String attribute, int number) throws SQLException {
-
         String query = "SELECT RACE, CLASS, AVG(LVL), AVG(STRENGTH), AVG(INTELLIGENCE), AVG(DEXTERITY), AVG(CHARISMA), AVG(LUCK) "
                 + "FROM CHARACTERS "
                 + "GROUP BY RACE, CLASS "
-                + "HAVING AVG(" + attribute + ") > ?";
+                + "HAVING AVG(" + sanitizeInput(attribute) + ") > ?";
 
         Connection connection = dbHandler.getConnection();
         PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
 
         ps.setInt(1, number);
-
         ResultSet resultSet = ps.executeQuery();
-
         return resultSet;
     }
 
@@ -316,10 +306,9 @@ public class AdminViewPageDBHandler {
         try {
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-
-            ps.setString(1, equipment);
-            ps.setString(2, character);
-            ps.setString(3, username);
+            ps.setString(1, sanitizeInput(equipment));
+            ps.setString(2, sanitizeInput(character));
+            ps.setString(3, sanitizeInput(username));
 
             ps.executeUpdate();
             connection.commit();
@@ -370,7 +359,6 @@ public class AdminViewPageDBHandler {
             System.out.println("ERROR: Unable to fetch data from table " + tableName);
             e.printStackTrace();
         } finally {
-            // Close resources in the finally block
             if (rs != null) {
                 try {
                     rs.close();
@@ -523,7 +511,6 @@ public class AdminViewPageDBHandler {
 
         String query = "INSERT INTO CHARACTERS VALUES(?, ?, ?, ?, ?, ?, ? ,? ,? ,? ,? ,? " +
                 ", ? ,? ,? ,? ,? )";
-
             Connection connection = dbHandler.getConnection();
             PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
             ps.setString(1, characterIDString);
@@ -547,5 +534,11 @@ public class AdminViewPageDBHandler {
             ps.executeUpdate();
             connection.commit();
             ps.close();
+    }
+    private String sanitizeInput(String input) {
+        if (input == null) {
+            return null;
+        }
+        return input.replaceAll("[^a-zA-Z0-9_\\s]", "").trim();
     }
 }

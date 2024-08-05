@@ -59,6 +59,7 @@ public class AvgHeightFrame extends JDialog {
             try {
                 ResultSet resultSet = adminViewPageDBHandler.queryAvgHeight(selectedOption);
                 parentPage.displayResults(resultSet);
+                JOptionPane.showMessageDialog(this, "Success!");
             } catch (SQLException ex) {
                 ex.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Error executing query: " + ex.getMessage());
