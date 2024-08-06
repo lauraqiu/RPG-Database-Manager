@@ -23,15 +23,5 @@ public class BackgroundFrame extends JFrame {
         add(panel);
         cardLayout.show(panel, "adminViewPage");
     }
-
-    public void navigateToCreateAccountPage() {
-        cardLayout.show(panel, "accountCreationPage");
-    }
-
-    public void navigateToAccountInfoPage() {
-        cardLayout.show(panel, "accountInfoPage");
-    }
-
-
 }
 

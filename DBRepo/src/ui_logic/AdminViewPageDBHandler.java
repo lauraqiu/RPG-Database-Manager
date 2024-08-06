@@ -208,34 +208,6 @@ public class AdminViewPageDBHandler {
         }
     }
 
-    public void getItems() {
-        String query = "SELECT * FROM ITEMS";
-
-        Connection connection = dbHandler.getConnection();
-        PrintablePreparedStatement ps = null;
-        ArrayList<String> userNames = new ArrayList<>();
-
-        JFrame itemsFrame = new JFrame();
-        itemsFrame.setLayout(new GridBagLayout());
-        GridBagConstraints gbc = new GridBagConstraints();
-
-        DefaultTableModel tableModel = new DefaultTableModel();
-        JTable table = new JTable(tableModel);
-
-        try {
-            ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ResultSet rs = ps.executeQuery();
-            while (rs.next()) {
-                tableModel.addRow(new Object[]{
-                        rs.getString("NAME"),
-                        rs.getInt("ISKEY") == 1 ? "True" : "False",
-                        rs.getString("DESCRIPTION")}
-                );
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 
     public ResultSet queryHeightWeight(String heightMin, String heightMax, String weightMin, String weightMax) throws SQLException {
         StringBuilder queryBuilder = new StringBuilder("SELECT * FROM Characters WHERE 1=1");
@@ -315,27 +287,6 @@ public class AdminViewPageDBHandler {
         return ps.executeQuery();
     }
 
-    // need to fix this
-    public void equipItem(String equipment, String character, String username) {
-        String query = "INSERT INTO EQUIPPED (eqname, cid, acc_user) VALUES (?, ?, ?)";
-        try {
-            Connection connection = dbHandler.getConnection();
-            PrintablePreparedStatement ps = new PrintablePreparedStatement(connection.prepareStatement(query), query, false);
-            ps.setString(1, sanitizeInput(equipment));
-            ps.setString(2, sanitizeInput(character));
-            ps.setString(3, sanitizeInput(username));
-
-            ps.executeUpdate();
-            connection.commit();
-            ps.close();
-
-            JOptionPane.showMessageDialog(null, "Item equipped successfully!");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error equipping item.");
-        }
-    }
 
     public void showFullTable(String tableName) {
         String query = "SELECT * FROM " + tableName;
@@ -512,9 +463,7 @@ public class AdminViewPageDBHandler {
             throw new RuntimeException(e);
         }
     }
-    public void getCharacter(){
 
-    }
     public void addCharacter(String characterIDString, String accUserString, String nameString, String classString, int age,
             int height, int weight, String raceString, int level, int money, int strength, int intelligence, int charisma,
             int dexterity, int luck, int invSlots, String serverNameString) throws SQLException{

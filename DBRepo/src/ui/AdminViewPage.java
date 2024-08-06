@@ -50,27 +50,15 @@ public class AdminViewPage extends JPanel {
 
         JButton accountsButton = new JButton("Accounts");
         JButton charactersButton = new JButton("Characters");
-        JButton equippedButton = new JButton("Equipped");
-        JButton serversButton = new JButton("Servers");
-        JButton itemsButton = new JButton("Items");
-        JButton inventoriesButton = new JButton("Inventories");
         JButton equippedByCharacterButton = new JButton("Find equipment By Class");
         JButton seeFullyEquippedButton = new JButton("SeeFullyEquippedCharacters");
 
         bottomPanel.add(accountsButton);
         bottomPanel.add(charactersButton);
-        bottomPanel.add(equippedButton);
-        bottomPanel.add(serversButton);
-        bottomPanel.add(itemsButton);
-        bottomPanel.add(inventoriesButton);
         bottomPanel.add(equippedByCharacterButton);
         bottomPanel.add(seeFullyEquippedButton);
         accountsButton.addActionListener(e -> buildAccountPage(adminViewPageDBHandler));
         charactersButton.addActionListener(e -> new CharactersPage(adminViewPageDBHandler));
-        equippedButton.addActionListener(e -> new EquippedPage(adminViewPageDBHandler));
-        serversButton.addActionListener(e -> {});
-        itemsButton.addActionListener(e -> {});
-        inventoriesButton.addActionListener(e -> {});
         equippedByCharacterButton.addActionListener(e -> new EquipmentByCharacterPage(adminViewPageDBHandler));
         seeFullyEquippedButton.addActionListener(e ->  new FullyEquippedCharacterPage(adminViewPageDBHandler));
     }
