@@ -30,8 +30,8 @@ public class AvgHeightFrame extends JDialog {
         add(promptLabel, gbc);
 
         optionComboBox = new JComboBox<>(new String[] {
-                "Max Height",
-                "Min Height"
+                "Max Average Height",
+                "Min Average Height"
         });
         gbc.gridx = 1;
         add(optionComboBox, gbc);

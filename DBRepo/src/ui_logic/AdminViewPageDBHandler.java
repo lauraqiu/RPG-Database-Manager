@@ -208,7 +208,6 @@ public class AdminViewPageDBHandler {
         }
     }
 
-
     public ResultSet queryHeightWeight(String heightMin, String heightMax, String weightMin, String weightMax) throws SQLException {
         StringBuilder queryBuilder = new StringBuilder("SELECT * FROM Characters WHERE 1=1");
 
@@ -274,9 +273,9 @@ public class AdminViewPageDBHandler {
 
     public ResultSet queryAvgHeight(String option) throws SQLException {
         String query;
-        if ("Max Height".equals(option)) {
+        if ("Max Average Height".equals(option)) {
             query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MAX(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
-        } else if ("Min Height".equals(option)) {
+        } else if ("Min Average Height".equals(option)) {
             query = "SELECT class FROM Characters GROUP BY class HAVING AVG(height) = (SELECT MIN(avg_height) FROM (SELECT AVG(height) AS avg_height FROM Characters GROUP BY class))";
         } else {
             throw new IllegalArgumentException("Invalid option: " + option);
