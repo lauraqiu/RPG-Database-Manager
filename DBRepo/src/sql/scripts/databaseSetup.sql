@@ -1,3 +1,17 @@
+drop table FRIENDS;
+drop table LEADERBOARDPARTICIPATION;
+drop table CONSUMABLES;
+drop table RESOURCES;
+drop table EQUIPPED;
+drop table EQUIPMENTS;
+drop table INVENTORY;
+drop table CHARACTERS;
+drop table SERVERS;
+drop table LEADERBOARDS;
+drop table SHAREDINVENTORY;
+drop table ACCOUNTS;
+drop table ITEMS;
+
 CREATE TABLE Accounts
 (
     username   VARCHAR(20) PRIMARY KEY,
